@@ -29,34 +29,50 @@
             <a href="#" class="icon"><i class="fas fa-user" id="login-btn"></i></a>
         </div>
 
-        <form action="" class="search-form">
+        <form action="/Home/Login" method="post" class="search-form">
             <input type="search" id="search-box" placeholder="search here....">
             <label for="search-box" class="fas fa-search"></label>
         </form>
 
-        <form action="" class="login-form" id="login-form">
+        <form action="/Home/Login" method="post" class="login-form" id="login-form">
             <h3>SIGN IN</h3>
-            <input type="email" placeholder="your email" class="box">
-            <input type="password" placeholder="your password" class="box">
+            <input type="email" name="email" placeholder="email" class="box" required>
+            <input type="password" name="password" placeholder="password" class="box" required>
             <p>forgot your password? <a href="#">click here</a></p>
             <p>don't have an account? <a href="#" id="register-link">create now</a></p>
-            <input type="submit" value="login now" class="btn">
+            <button type="submit" class="btn">Login Now</button>
+        </form>
+
+        <!-- Registration Form -->
+        <form action="/Home/Register" method="post" class="registration-form" id="registration-form">
+            <h3>REGISTER</h3>
+            <input type="text" placeholder="username" class="box" name="UserName" required>
+            <input type="email" placeholder="email" class="box" name="Email" required>
+            <input type="password" placeholder="password" class="box" name="Password" required>
+            <button type="submit" class="btn">Register Now</button>
+            <span id="close-registration">&times;</span>
         </form>
     </header>
 
-    <!-- Registration Form -->
-    <form method="post" class="registration-form" id="registration-form">
-        <h3>REGISTER</h3>
-        <input type="text" placeholder="username" class="box" name="UserName" required>
-        <input type="email" placeholder="email" class="box" name="Email" required>
-        <input type="password" placeholder="password" class="box" name="Password" required>
-        <button id="submitBtn" type="text" class="btn">Register Now</button>
-        @* <input type="submit" id="submitBtn" value="register now" class="btn"> *@
-        <span id="close-registration">&times;</span>
-    </form>
-
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <span class="close-btn">&times;</span>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <span class="close-btn">&times;</span>
+            @TempData["ErrorMessage"]
+        </div>
+    }
 
     <main>
+        <!-- Success and error messages -->
+        
+
         <!-- Your main content goes here -->
     </main>
 

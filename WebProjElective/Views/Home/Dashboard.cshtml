@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="~/images/grocerylogo.png" alt="Logo"> Hehehe
+        </a>
+
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#product">Products</a>
+            <a href="#categories">Categories</a>
+            <a href="#review">Review</a>
+            <a href="#blogs">Blogs</a>
+        </nav>
+
+        <form action="/Home/Login" method="post" class="search-form">
+            <input type="search" id="search-box" placeholder="search here....">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+
+        <div class="icons">
+            <a href="#" class="icon"><i class="fas fa-bars" id="menu-btn"></i></a>
+            <a href="#" class="icon"><i class="fas fa-search" id="search-btn"></i></a>
+            <a href="#" class="icon"><i class="fas fa-shopping-cart" id="cart-btn"></i></a>
+            <div class="user-info-container">
+                <button class="user-info-button" id="user-btn">
+                    <i class="fas fa-user" id="login-btn"></i>
+                    @* <img src="~/images/user-pflaceholder.png"> *@
+                </button>
+                <div class="user-info-dropdown" id="user-info">
+                    <a href="#"><i class="fas fa-user"></i>Profile</a>
+                    <a href="#"><i class="fas fa-box"></i>Orders</a>
+                    <a href="#"><i class="fas fa-info-circle"></i>Account Info</a>
+                    <a href="/Home/Logout"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <span class="close-btn">&times;</span>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <span class="close-btn">&times;</span>
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <main>
+        <h2>User Dashboard</h2>
+        <p>Welcome to your dashboard, @User.Identity.Name!</p>
+        <!-- Your main content goes here -->
+    </main>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

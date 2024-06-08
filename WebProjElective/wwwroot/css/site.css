@@ -196,6 +196,23 @@ main {
         padding: 0 1.5rem;
     }
 
+    .header .login-form .btn {
+        margin-top: 1rem;
+        display: inline-block;
+        padding: .8rem 3rem;
+        font-size: 1.7rem;
+        border-radius: .5rem;
+        border: .2rem solid var(--black);
+        color: var(--black);
+        cursor: pointer;
+        background: none;
+    }
+
+        .header .login-form .btn:hover {
+            background: var(--orange);
+            color: #fff;
+        }
+
     .header .login-form p {
         font-size: 1.4rem;
         padding: .5rem 0;
@@ -206,6 +223,37 @@ main {
             color: var(--orange);
             text-decoration: underline;
         }
+
+.alert {
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    position: relative; /* Added for positioning the close button */
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #000;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
 
 footer {
     background-color: #333;
@@ -273,6 +321,104 @@ footer {
         .registration-form #close-registration:hover {
             color: var(--orange);
         }
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+    .user-info h3 {
+        margin-bottom: 10px;
+    }
+
+    .user-info button {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #5cb85c;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .user-info button:hover {
+            background-color: #4cae4c;
+        }
+
+.user-info-container {
+    position: relative;
+}
+
+.user-info-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: var(--black);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .user-info-button:hover {
+        color: var(--orange);
+    }
+
+.user-info-container {
+    position: relative;
+}
+
+.user-info-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: var(--black);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .user-info-button:hover {
+        color: var(--orange);
+    }
+
+.user-info-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    width: 250px;
+    border-radius: 10px;
+    padding: 10px 0;
+}
+
+    .user-info-dropdown.show {
+        display: block;
+    }
+
+    .user-info-dropdown a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black;
+    transition: background 0.3s;
+    }
+
+        .user-info-dropdown a:hover {
+            background: var(--orange);
+            color: #fff;
+        }
+
 
 @media (max-width: 768px) {
     #menu-btn {

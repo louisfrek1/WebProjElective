@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using WebProjElective.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,14 @@ builder.Services.AddTransient<UserContext>(provider =>
     var connectionString = configuration.GetConnectionString("DefaultConnection");
     return new UserContext(connectionString);
 });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Home/Index"; // Redirect to login page if not authenticated
+        options.LogoutPath = "/Home/Logout";
+    });
+
 
 var app = builder.Build();
 

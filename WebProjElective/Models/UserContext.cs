@@ -35,5 +35,35 @@ namespace WebProjElective.Models
                 return false;
             }
         }
+
+        public Users GetUser(string email, string password)
+        {
+            try
+            {
+                _mySqlConnection.Open();
+                MySqlCommand command = new MySqlCommand(
+                    @"SELECT username, email FROM users WHERE email = @mail AND password = @pass", _mySqlConnection);
+                command.Parameters.AddWithValue("@mail", email);
+                command.Parameters.AddWithValue("@pass", password);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                Users user = null;
+                if (reader.Read())
+                {
+                    user = new Users
+                    {
+                        UserName = reader["username"].ToString(),
+                        Email = reader["email"].ToString()
+                    };
+                }
+                _mySqlConnection.Close();
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
     }
 }
