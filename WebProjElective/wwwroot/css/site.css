@@ -4,7 +4,7 @@
     --orange: #ff7800;
     --black: #130f40;
     --light-color: #666;
-    --box-shadow: 0 .5rem 1rem rgba(0,0,0,0.1);
+    --box-shadow: 0 .5rem 1.5rem rgba(0,0,0,0.1);
     --border: .2rem solid rgba(0,0,0,.1);
     --outline: .1rem solid rgba(0,0,0,.1);
     --outline-hover: .2rem solid var(--black);
@@ -33,6 +33,24 @@ body {
     background: #eee;
 }
 
+section{
+    padding: 2rem 9%;
+}
+
+.heading {
+    text-align: center;
+    padding: 2rem 0;
+    padding-bottom: 3rem;
+}
+
+.heading span{
+    background: var(--orange);
+    color: #fff;
+    display: inline-block;
+    padding: .5rem 3rem;
+    clip-path: polygon(100% 0, 93% 50%, 100% 99%, 0% 100%, 7% 50%, 0% 0%);
+}
+
 .btn {
     margin-top: 1rem;
     display: inline-block;
@@ -43,6 +61,7 @@ body {
     color: var(--black);
     cursor: pointer;
     background: none;
+    outline-offset: 0rem;
 }
 
     .btn:hover {
@@ -268,13 +287,14 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 30rem;
+    width: 40rem;
     padding: 2rem;
     background: #fff;
     box-shadow: var(--box-shadow);
     border-radius: .5rem;
     text-align: center;
     display: none; /* Initially hidden */
+    z-index: 1000; /* Ensure it's above the blurred background */
 }
 
     .registration-form.active {
@@ -419,6 +439,156 @@ footer {
             color: #fff;
         }
 
+.blur-background {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    z-index: 999; /* Ensure it's behind the form but above other content */
+}
+
+.home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(https://t4.ftcdn.net/jpg/00/12/57/29/360_F_12572978_IEgAkVCX17ZMD2R8pXRuJD3lAhU1edKm.jpg) no-repeat; /* Replace with your background image */
+    background-position: center;
+    background-size: cover;
+    padding-top: 17rem;
+    padding-bottom: 10rem;
+}
+
+
+    .home .content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .home h3 {
+        font-size: 36px;
+        margin-bottom: 20px;
+        line-height: 1.4;
+    }
+
+        .home h3 span {
+            color: orange; /* Highlight color for the span */
+        }
+
+    .home p {
+        font-size: 18px;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .home .btn {
+        padding: 10px 20px;
+        background-color: var(--orange);
+        position: center;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        .home .btn:hover {
+            background-color: darkorange;
+        }
+
+.features {
+    padding: 2rem 9%;
+}
+
+    .features .box-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+        .features .box-container .box {
+            background: #fff;
+            border-radius: .5rem;
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            text-align: center;
+            flex: 1 1 30rem;
+            max-width: 30rem;
+            margin: 1rem;
+        }
+
+            .features .box-container .box:hover{
+                outline: var(--outline-hover);
+                outline-offset: 0rem;
+            }
+
+            .features .box-container .box img {
+                max-width: 100px;
+                margin-bottom: 1rem;
+            }
+
+            .features .box-container .box h3 {
+                font-size: 2rem;
+                color: var(--black);
+                margin: 1rem 0;
+            }
+
+            .features .box-container .box p {
+                font-size: 1.4rem;
+                color: var(--light-color);
+                margin: 1rem 0;
+                padding: 1rem 0;
+            }
+
+            .features .box-container .box a.btn {
+                padding: .5rem 2rem;
+                font-size: 1.4rem;
+            }
+
+.products .product-slider{
+    padding: 1rem;
+}
+
+    .products .product-slider:first-child{
+        margin-bottom: 2rem;
+    }
+
+    .products .product-slider .box{
+        background: #fff;
+        border-radius: .5rem;
+        text-align: center;
+        padding: 3rem 2rem;
+        outline-offset: -1rem;
+        outline: var(--outline);
+        box-shadow: var(--box-shadow);
+    }
+
+        .products .product-slider .box:hover {
+            outline-offset: -1rem;
+            outline: var(--outline);
+        }
+
+        @media(max-width:991px) {
+            html{
+         font-size:55%;
+        }
+    header{
+         padding:2rem;
+          }
+    section {
+         padding: 2rem 9%;
+            }
+
+}
+
 
 @media (max-width: 768px) {
     #menu-btn {
@@ -450,5 +620,9 @@ footer {
 @media (max-width: 450px) {
     html {
         font-size: 50%;
+    }
+
+    .heading{
+        font-size: 2.5rem;
     }
 }

@@ -42,7 +42,7 @@
             <p>don't have an account? <a href="#" id="register-link">create now</a></p>
             <button type="submit" class="btn">Login Now</button>
         </form>
-
+        <div id="blur-background" class="blur-background"></div>
         <!-- Registration Form -->
         <form action="/Home/Register" method="post" class="registration-form" id="registration-form">
             <h3>REGISTER</h3>
@@ -68,14 +68,71 @@
             @TempData["ErrorMessage"]
         </div>
     }
+    <!-- Home Section ni dria-->
+    <section class="home" id="home">
+        <div class="content">
+            <h3>asdas asdas asd asd  <span>BUSET</span>fas asfahdfh hgjhgytut tyu </h3>
+            <p>asd as ad htfh d gdfg dfg yhfhfnfg fh fg gfh. edh dhdry .ery erhdffgryrty er dfgdf y</p>
+            <a href="#" class="btn">SHOP NA</a>
+        </div>
+    </section>
 
+    <!-- Feature section ni dria-->
+
+    <section class="features" id="features">
+
+        <h1 class="heading"> our <span>features</span></h1>
+
+        <div class="box-container">
+            <div class="box">
+                <img src="images/original-logo.png" alt="">
+                <h3>100% Guaranteed supplier</h3>
+                <p>=asf afasf afagas asf asf asf afasasfa a ad</p>
+                <a href="#" class="btn">read more</a>
+            </div>
+
+            <div class="box">
+                <img src="images/fastdelivery-logo.png" alt="">
+                <h3>Fast Delivery</h3>
+                <p>=asf afasf afagas asf asf asf afasasfa a ad</p>
+                <a href="#" class="btn">read more</a>
+            </div>
+
+            <div class="box">
+                <img src="images/payment-logo.png" alt="">
+                <h3>Easy payment</h3>
+                <p>=asf afasf afagas asf asf asf afasasfa a ad</p>
+                <a href="#" class="btn">read more</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!--Product section ni dria-->
+
+    <section class="products" id="products">
+        <h1 class="heading">our <span>products</span></h1>
+
+        <div class="product-slider">
+            <div class="wrapper">
+                <div class="box">
+                    @foreach(var product in Model)
+                    {
+                        <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
+                        <h3>@product.ProductName</h3>
+                        <div class="price">@product.ProductPrice</div>
+                    }
+                </div>
+                <a href="#" class=btn">add to cart</a>
+            </div>
+        </div>
+    </section>
     <main>
         <!-- Success and error messages -->
         
 
         <!-- Your main content goes here -->
     </main>
-
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="scripts.js"></script>
 </body>

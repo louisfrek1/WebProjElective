@@ -20,11 +20,12 @@ namespace WebProjElective.Models
             {
                 _mySqlConnection.Open();
                 MySqlCommand command = new MySqlCommand(
-                    @"INSERT INTO users (username, password, email)
-                      VALUES(@uname, @pass, @mail)", _mySqlConnection);
+                    @"INSERT INTO users (username, password, email, accttype)
+                      VALUES(@uname, @pass, @mail, 'user')", _mySqlConnection);
                 command.Parameters.AddWithValue("@uname", user.UserName);
                 command.Parameters.AddWithValue("@pass", user.Password);
                 command.Parameters.AddWithValue("@mail", user.Email);
+                command.Parameters.AddWithValue("@accttype", user.AcctType);
                 int rowsAffected = command.ExecuteNonQuery();
                 _mySqlConnection.Close();
                 return rowsAffected > 0;
@@ -42,7 +43,7 @@ namespace WebProjElective.Models
             {
                 _mySqlConnection.Open();
                 MySqlCommand command = new MySqlCommand(
-                    @"SELECT username, email FROM users WHERE email = @mail AND password = @pass", _mySqlConnection);
+                    @"SELECT username, email, accttype FROM users WHERE email = @mail AND password = @pass", _mySqlConnection);
                 command.Parameters.AddWithValue("@mail", email);
                 command.Parameters.AddWithValue("@pass", password);
                 MySqlDataReader reader = command.ExecuteReader();
@@ -53,7 +54,8 @@ namespace WebProjElective.Models
                     user = new Users
                     {
                         UserName = reader["username"].ToString(),
-                        Email = reader["email"].ToString()
+                        Email = reader["email"].ToString(),
+                        AcctType = reader["accttype"].ToString()
                     };
                 }
                 _mySqlConnection.Close();
@@ -65,5 +67,6 @@ namespace WebProjElective.Models
                 return null;
             }
         }
+
     }
 }

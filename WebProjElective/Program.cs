@@ -3,14 +3,15 @@ using WebProjElective.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 //builder.Services.AddTransient<DbContext>(provider =>
 //{
 //    var configuration = provider.GetRequiredService<IConfiguration>();
 //    var connectionString = configuration.GetConnectionString("DefaultConnection");
 //    return new DbContext(connectionString);
 //});
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<UserContext>(provider =>
 {
@@ -19,13 +20,19 @@ builder.Services.AddTransient<UserContext>(provider =>
     return new UserContext(connectionString);
 });
 
+builder.Services.AddTransient<ProductContext>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    return new ProductContext(connectionString);
+});
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Home/Index"; // Redirect to login page if not authenticated
         options.LogoutPath = "/Home/Logout";
     });
-
 
 var app = builder.Build();
 
@@ -52,14 +59,17 @@ var app = builder.Build();
 //    }
 //}
 
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

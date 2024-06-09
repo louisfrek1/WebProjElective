@@ -10,23 +10,27 @@ namespace WebProjElective.Controllers
     public class HomeController : Controller
     {
         private readonly UserContext _userContext;
+        private readonly ProductContext _productContext;
 
         // Inject UserContext dependency
-        public HomeController(UserContext userContext)
+        public HomeController(UserContext userContext,  ProductContext productContext)
         {
             _userContext = userContext;
+            _productContext = productContext;
         }
 
         // GET: Home/Index
         public IActionResult Index()
         {
-            return View();
+            var products = _productContext.GetProducts().Take(10).ToList();
+            return View(products);
         }
 
         public IActionResult Dashboard()
         {
             return View();
         }
+
 
         // POST: Home/Register
         [HttpPost]
@@ -48,7 +52,6 @@ namespace WebProjElective.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Home/Login
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
@@ -58,10 +61,10 @@ namespace WebProjElective.Controllers
                 if (user != null)
                 {
                     var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.Email, user.Email)
-                    };
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var authProperties = new AuthenticationProperties
@@ -72,7 +75,14 @@ namespace WebProjElective.Controllers
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
                     TempData["SuccessMessage"] = "Login successful!";
 
-                    return RedirectToAction("Dashboard");
+                    if (user.AcctType == "admin")
+                    {
+                        return RedirectToAction("AdminForm", "Admin");  // Redirect to admin form
+                    }
+                    else if (user.AcctType == "user")
+                    {
+                        return RedirectToAction("Dashboard", "Home");  // Redirect to user dashboard
+                    }
                 }
                 else
                 {
@@ -81,6 +91,8 @@ namespace WebProjElective.Controllers
             }
             return RedirectToAction("Index");
         }
+
+
 
         // GET: Home/Logout
         public async Task<IActionResult> Logout()
