@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebProjElective.Models.Users>
+
+@{
+    ViewBag.Title = "Accounts";
+}
+<link rel="stylesheet" href="~/css/admindes.css">
+
+<h2>ADMIN PANEL ||| Accounts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Account Type</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.AcctType</td> <!-- Adjust property name based on your model -->
+                    <td>
+                    <form method="get" action="@Url.Action("UpdateEnrollmentForm", "Product", new { id = user.Id})">
+                        <button type="submit" class="btn btn-primary">UPDATE</button>
+                    </form>
+                    <form method="post" action="@Url.Action("DeleteStudent", "Product", new { id = user.Id})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
+                        <button type="submit" class="btn btn-danger">DELETE</button>
+                    </form>>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>

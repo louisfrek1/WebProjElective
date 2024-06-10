@@ -7,6 +7,7 @@ namespace WebProjElective.Controllers
     public class ProductController : Controller
     {
         private readonly ProductContext _productContext;
+        private readonly ILogger<ProductController> _logger;
 
         public ProductController(ProductContext productContext)
         {
@@ -32,40 +33,29 @@ namespace WebProjElective.Controllers
         }
 
         [HttpPost]
-        public IActionResult Insert(Product product, IFormFile ProductImage)
+        public IActionResult CreateForm(Product product, IFormFile ProductImage)
         {
-            if (ModelState.IsValid)
+            if (ProductImage != null && ProductImage.Length > 0)
             {
-                try
+                // Convert IFormFile to byte array
+                using (var memoryStream = new MemoryStream())
                 {
-                    if (ProductImage != null && ProductImage.Length > 0)
-                    {
-                        using (var ms = new System.IO.MemoryStream())
-                        {
-                            ProductImage.CopyTo(ms);
-                            product.ProductImage = ms.ToArray(); // Convert image to byte array
-                        }
-                    }
-
-                    // Insert product into database
-                    bool isSuccess = _productContext.InsertProduct(product);
-                    if (isSuccess)
-                    {
-                        TempData["SuccessMessage"] = "Product successfully created!";
-                        return RedirectToAction("ProductForm", "Admin"); // Redirect to the list of products
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage"] = "Failed to create product.";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    TempData["ErrorMessage"] = "An error occurred: " + ex.Message;
+                    ProductImage.CopyTo(memoryStream);
+                    product.ProductImage = memoryStream.ToArray();
                 }
             }
-            // If ModelState is not valid or any error occurred, redirect to Error action
-            return RedirectToAction("Error", "Product");
+
+            bool insertionResult = _productContext.InsertProduct(product);
+
+            if (insertionResult)
+            {
+                return RedirectToAction("ProductForm","Admin"); // Redirect to product list after successful insertion
+            }
+            else
+            {
+                // Handle insertion failure
+                return View("Error");
+            }
         }
     }
 }

@@ -99,6 +99,7 @@ body {
     margin: 20px 0;
     font-size: 1.6rem;
     text-align: left;
+    display: flex;
 }
 
     .table th, .table td {

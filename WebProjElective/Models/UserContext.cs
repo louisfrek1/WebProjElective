@@ -68,5 +68,27 @@ namespace WebProjElective.Models
             }
         }
 
+        public List<Users> GetUsers()
+        {
+            List<Users> users = new List<Users>();
+            _mySqlConnection.Open();
+            MySqlCommand command = new MySqlCommand("SELECT * FROM users", _mySqlConnection);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    users.Add(new Users
+                    {
+                        Id = reader.GetInt32("idusers"),
+                        UserName = reader.GetString("username"),
+                        Email = reader.GetString("email"),
+                        AcctType = reader.GetString("accttype")
+                    }) ;
+                }
+            }
+            _mySqlConnection.Close();
+            return users;
+        }
+
     }
 }

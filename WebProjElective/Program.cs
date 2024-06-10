@@ -1,18 +1,16 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 using WebProjElective.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddTransient<DbContext>(provider =>
-//{
-//    var configuration = provider.GetRequiredService<IConfiguration>();
-//    var connectionString = configuration.GetConnectionString("DefaultConnection");
-//    return new DbContext(connectionString);
-//});
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Configure database contexts
 builder.Services.AddTransient<UserContext>(provider =>
 {
     var configuration = provider.GetRequiredService<IConfiguration>();
@@ -27,6 +25,7 @@ builder.Services.AddTransient<ProductContext>(provider =>
     return new ProductContext(connectionString);
 });
 
+// Configure authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -36,35 +35,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-// Ensure database connection works at startup
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    try
-//    {
-//        var context = services.GetRequiredService<DbContext>();
-//        bool isConnected = context.TestConnection();
-//        if (isConnected)
-//        {
-//            Console.WriteLine("Successfully connected to the database.");
-//        }
-//        else
-//        {
-//            Console.WriteLine("Failed to connect to the database.");
-//        }
-//    }
-//    catch (Exception ex)
-//    {
-//        Console.WriteLine($"An error occurred while checking the database: {ex.Message}");
-//    }
-//}
-
-
-if (!app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

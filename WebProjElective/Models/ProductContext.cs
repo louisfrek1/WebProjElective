@@ -8,7 +8,6 @@ namespace WebProjElective.Models
     {
         private readonly MySqlConnection _mySqlConnection;
 
-
         public ProductContext(string connectionString)
         {
             _mySqlConnection = new MySqlConnection(connectionString);
@@ -18,8 +17,7 @@ namespace WebProjElective.Models
         {
             List<Product> products = new List<Product>();
             _mySqlConnection.Open();
-            MySqlCommand command = new MySqlCommand(
-                        "SELECT * FROM products", _mySqlConnection);
+            MySqlCommand command = new MySqlCommand("SELECT * FROM products", _mySqlConnection);
             using (MySqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -46,8 +44,8 @@ namespace WebProjElective.Models
             {
                 _mySqlConnection.Open();
                 MySqlCommand command = new MySqlCommand(
-                        "INSERT INTO products (name, price, description, prodimg, availitems, dateupload) " +
-                        "VALUES (@name, @price, @description, @prodimg, @availitems, @dateupload)", _mySqlConnection);
+                    "INSERT INTO products (name, price, description, prodimg, availitems, dateupload) " +
+                    "VALUES (@name, @price, @description, @prodimg, @availitems, @dateupload)", _mySqlConnection);
                 command.Parameters.AddWithValue("@name", product.ProductName);
                 command.Parameters.AddWithValue("@price", product.ProductPrice);
                 command.Parameters.AddWithValue("@description", product.ProductDescription);
@@ -60,8 +58,14 @@ namespace WebProjElective.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("An error occurred: " + ex.Message);
+                // Log the full exception for debugging
+                Console.WriteLine("Stack Trace: " + ex.StackTrace);
                 return false;
+            }
+            finally
+            {
+                _mySqlConnection.Close();
             }
         }
     }
