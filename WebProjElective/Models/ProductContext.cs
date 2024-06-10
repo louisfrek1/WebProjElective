@@ -1,10 +1,13 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace WebProjElective.Models
 {
     public class ProductContext
     {
         private readonly MySqlConnection _mySqlConnection;
+
 
         public ProductContext(string connectionString)
         {
@@ -14,33 +17,52 @@ namespace WebProjElective.Models
         public List<Product> GetProducts()
         {
             List<Product> products = new List<Product>();
+            _mySqlConnection.Open();
+            MySqlCommand command = new MySqlCommand(
+                        "SELECT * FROM products", _mySqlConnection);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    products.Add(new Product
+                    {
+                        ProductId = reader.GetInt32("idproducts"),
+                        ProductName = reader.GetString("name"),
+                        ProductPrice = reader.GetInt32("price"),
+                        ProductDescription = reader.GetString("description"),
+                        ProductImage = reader["prodimg"] as byte[],
+                        ProductAvailableItems = reader.GetInt32("availitems"),
+                        ProductDateUpload = reader.GetDateTime("dateupload"),
+                    });
+                }
+            }
+            _mySqlConnection.Close();
+            return products;
+        }
+
+        public bool InsertProduct(Product product)
+        {
             try
             {
                 _mySqlConnection.Open();
                 MySqlCommand command = new MySqlCommand(
-                    "SELECT name, name, price, description, prodimg, availitems FROM products", _mySqlConnection);
-                MySqlDataReader reader = command.ExecuteReader();
+                        "INSERT INTO products (name, price, description, prodimg, availitems, dateupload) " +
+                        "VALUES (@name, @price, @description, @prodimg, @availitems, @dateupload)", _mySqlConnection);
+                command.Parameters.AddWithValue("@name", product.ProductName);
+                command.Parameters.AddWithValue("@price", product.ProductPrice);
+                command.Parameters.AddWithValue("@description", product.ProductDescription);
+                command.Parameters.AddWithValue("@prodimg", product.ProductImage);
+                command.Parameters.AddWithValue("@availitems", product.ProductAvailableItems);
+                command.Parameters.AddWithValue("@dateupload", product.ProductDateUpload);
 
-                while (reader.Read())
-                {
-                    Product product = new Product
-                    {
-                        ProductName = reader["name"].ToString(),
-                        ProductPrice = Convert.ToInt32(reader["price"]),
-                        ProductDescription = reader["description"].ToString(),
-                        ProductImage = (byte[])reader["prodimg"],
-                        ProductAvailableItems = Convert.ToInt32(reader["availitems"])
-                    };
-                    products.Add(product);
-                }
-                _mySqlConnection.Close();
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected > 0;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                return false;
             }
-            return products;
         }
-
     }
 }

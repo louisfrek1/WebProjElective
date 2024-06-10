@@ -7,23 +7,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="~/css/AdminPanel.css">
+    <title>Grocery Store</title>
+    <link rel="stylesheet" href="~/css/admindes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
-    <div class="admin-panel">
-        <header>
-            <h1>Admin Panel</h1>
-            <div class="logout-icon">
-                <img src="~/images/logout-icon.png" alt="Logout">
-            </div>
-        </header>
-        <nav>
-            <button class="nav-button">Profile</button>
-            <button class="nav-button">Accounts</button>
-            <button class="nav-button">Orders</button>
-            <button class="nav-button">Products</button>
-        </nav>
-    </div>
+    <body>
+        <div class="admin-panel">
+            <header>
+                <h1>Admin Panel</h1>
+                <div class="logout-icon">
+                    <img src="~/images/logout-icon.png" alt="Logout">
+                </div>
+            </header>
+            <nav>
+                <button class="nav-button" onclick="redirectTo('@Url.Action("Profile", "Admin")')">Profile</button>
+                <button class="nav-button" onclick="redirectTo('@Url.Action("Accounts", "Admin")')">Accounts</button>
+                <button class="nav-button" onclick="redirectTo('@Url.Action("Orders", "Admin")')">Orders</button>
+                <button class="nav-button" onclick="redirectTo('@Url.Action("ProductForm", "Admin")')">Products</button>
+            </nav>
+        </div>
+        <script>
+            function redirectTo(url) {
+                window.location.href = url;
+            }
+        </script>
+    </body>
 </body>
 </html>

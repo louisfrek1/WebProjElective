@@ -1,0 +1,60 @@
+﻿@model IEnumerable<WebProjElective.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+<link rel="stylesheet" href="~/css/admindes.css">
+
+    <h2>ADMIN PANEL ||| Products</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Available Items</th>
+                <th>Date Uploaded</th>
+                <th>Uploader</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.ProductId</td>
+                        <td>@product.ProductName</td>
+                        <td>@product.ProductPrice</td>
+                        <td>@product.ProductDescription</td>
+                        <td>
+                            @if (product.ProductImage != null)
+                            {
+                                <img src="data:image;base64,@(Convert.ToBase64String(product.ProductImage))" class="product-image" />
+                            }
+                        </td>
+                        <td>@product.ProductAvailableItems</td>
+                        <td>@product.ProductDateUpload.ToShortDateString()</td>
+                    <td>
+                        <form method="get" action="@Url.Action("UpdateEnrollmentForm", "Product", new { id = product.ProductPrice})">
+                            <button type="submit" class="btn btn-primary">UPDATE</button>
+                        </form>
+                        <form method="post" action="@Url.Action("DeleteStudent", "Product", new { id = product.ProductPrice})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
+                            <button type="submit" class="btn btn-danger">DELETE</button>
+                        </form>>
+                    </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="7">No products available</td></tr>
+            }
+        </tbody>
+    </table>
+
+<a href="@Url.Action("CreateForm", "Product")" class="btn btn-primary">Add Product</a>

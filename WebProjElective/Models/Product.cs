@@ -8,6 +8,7 @@
         public byte[] ProductImage { get; set; }
         public int ProductPrice { get; set; }
         public int ProductAvailableItems { get; set; }
+        public DateTime ProductDateUpload { get; set; }
 
     }
 }
