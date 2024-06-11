@@ -9,6 +9,8 @@
         public decimal ProductPrice { get; set; }
         public int ProductAvailableItems { get; set; }
         public DateTime ProductDateUpload { get; set; }
+        public int UserId { get; set; }
+        public string Username { get; set; }
 
     }
 }

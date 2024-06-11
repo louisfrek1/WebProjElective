@@ -79,7 +79,6 @@ window.onclick = function (event) {
 }
 
 
-
 //const submitBtn = document.getElementById("submitBtn");
 
 //submitBtn.addEventListener('click', funtion{

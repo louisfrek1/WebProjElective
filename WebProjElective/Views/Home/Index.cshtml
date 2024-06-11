@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grocery Store</title>
     <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -112,18 +113,19 @@
 
     <section class="products" id="products">
         <h1 class="heading">our <span>products</span></h1>
-
-        <div class="product-slider">
-            <div class="wrapper">
-                <div class="box">
-                    @foreach(var product in Model)
-                    {
-                        <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
-                        <h3>@product.ProductName</h3>
-                        <div class="price">@product.ProductPrice</div>
-                    }
-                </div>
-                <a href="#" class=btn">add to cart</a>
+        <div class="swiper product-slider">
+            <div class="swiper-wrapper">
+                @foreach (var product in Model)
+                {
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
+                            <h3>@product.ProductName</h3>
+                            <div class="price">@product.ProductPrice</div>
+                            <a href="#" class="btn">add to cart</a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </section>
@@ -133,7 +135,32 @@
 
         <!-- Your main content goes here -->
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="scripts.js"></script>
+    <script src="site.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper(".product-slider", {
+                loop: true,
+                spaceBetween: 20,
+                autoplay: {
+                    delay: 7500,
+                    disableOnInteraction: false,
+                },
+                centeredSlides: true,
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1020: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+        });
+    </script>
 </body>
 </html>

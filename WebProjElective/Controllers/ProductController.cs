@@ -7,7 +7,6 @@ namespace WebProjElective.Controllers
     public class ProductController : Controller
     {
         private readonly ProductContext _productContext;
-        private readonly ILogger<ProductController> _logger;
 
         public ProductController(ProductContext productContext)
         {

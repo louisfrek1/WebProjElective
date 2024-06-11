@@ -553,31 +553,87 @@ footer {
                 font-size: 1.4rem;
             }
 
-.products .product-slider{
-    padding: 1rem;
+.products {
+    padding: 2rem;
+    background: #fff;
 }
 
-    .products .product-slider:first-child{
+    .products .heading {
+        text-align: center;
         margin-bottom: 2rem;
     }
 
-    .products .product-slider .box{
-        background: #fff;
-        border-radius: .5rem;
-        text-align: center;
-        padding: 3rem 2rem;
-        outline-offset: -1rem;
-        outline: var(--outline);
-        box-shadow: var(--box-shadow);
-    }
-
-        .products .product-slider .box:hover {
-            outline-offset: -1rem;
-            outline: var(--outline);
+        .products .heading span {
+            color: var(--black);
         }
 
-        @media(max-width:991px) {
-            html{
+    .products .product-slider {
+        width: 100%;
+        padding: 1rem;
+    }
+
+        .products .product-slider .swiper-wrapper {
+            display: flex;
+        }
+
+        .products .product-slider .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .products .product-slider .box {
+            background: #fff;
+            border-radius: .5rem;
+            text-align: center;
+            padding: 3rem 2rem;
+            outline-offset: -1rem;
+            outline: var(--outline);
+            box-shadow: var(--box-shadow);
+            transition: .2s linear;
+            width: 300px;
+        }
+
+            .products .product-slider .box:hover {
+                outline-offset: 0rem;
+                outline: var(--outline);
+            }
+
+            .products .product-slider .box img {
+                height: 20rem;
+                object-fit: cover;
+            }
+
+            .products .product-slider .box h3 {
+                font-size: 2.5rem;
+                color: var(--black);
+            }
+
+            .products .product-slider .box .price {
+                font-size: 2rem;
+                color: var(--light-color);
+                padding: .5rem 0;
+            }
+
+            .products .product-slider .box .btn {
+                display: inline-block;
+                padding: 1rem 2rem;
+                background: var(--orange);
+                color: #fff;
+                text-decoration: none;
+                border-radius: .5rem;
+                transition: .3s;
+            }
+
+                .products .product-slider .box .btn:hover {
+                    background: var(--light-color);
+                }
+
+
+
+    @media(max-width:991px) {
+        html{
          font-size:55%;
         }
     header{
