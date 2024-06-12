@@ -243,6 +243,7 @@ main {
             text-decoration: underline;
         }
 
+
 .alert {
     padding: 15px;
     margin: 15px 0;
@@ -480,10 +481,15 @@ footer {
             color: orange; /* Highlight color for the span */
         }
 
+
     .home p {
         font-size: 18px;
         margin-bottom: 30px;
         line-height: 1.6;
+    }
+
+    .home p span {
+        color: orange; /* Highlight color for the span */
     }
 
     .home .btn {
@@ -630,6 +636,83 @@ footer {
                     background: var(--light-color);
                 }
 
+.categories {
+    padding: 2rem;
+    background: #fff;
+}
+
+    .categories .heading {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+        .categories .heading span {
+            color: var(--black);
+        }
+
+    .categories .category-slider {
+        width: 100%;
+        padding: 1rem;
+    }
+
+        .categories .category-slider .swiper-wrapper {
+            display: flex;
+        }
+
+        .categories .category-slider .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .categories .category-slider .box {
+            background: #fff;
+            border-radius: .5rem;
+            text-align: center;
+            padding: 3rem 2rem;
+            outline-offset: -1rem;
+            outline: var(--outline);
+            box-shadow: var(--box-shadow);
+            transition: .2s linear;
+            width: 300px;
+        }
+
+            .categories .category-slider .box:hover {
+                outline-offset: 0rem;
+                outline: var(--outline);
+            }
+
+            .categories .category-slider .box img {
+                height: 20rem;
+                object-fit: cover;
+            }
+
+            .categories .category-slider .box h3 {
+                font-size: 2.5rem;
+                color: var(--black);
+            }
+
+            .categories .category-slider .box p {
+                font-size: 2rem;
+                color: var(--light-color);
+                padding: .5rem 0;
+            }
+
+            .categories .category-slider .box .btn {
+                display: inline-block;
+                padding: 1rem 2rem;
+                background: var(--orange);
+                color: #fff;
+                text-decoration: none;
+                border-radius: .5rem;
+                transition: .3s;
+            }
+
+                .categories .category-slider .box .btn:hover {
+                    background: var(--light-color);
+                }
+
 
 
     @media(max-width:991px) {
@@ -644,6 +727,7 @@ footer {
             }
 
 }
+
 
 
 @media (max-width: 768px) {

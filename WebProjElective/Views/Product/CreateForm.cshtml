@@ -1,9 +1,51 @@
-﻿@{
+﻿@model IEnumerable<WebProjElective.Models.Users>;
+@{
     ViewBag.Title = "Create Product";
 }
 
 <html lang="en">
 <head>
+    <style>
+        .product-form .styled-select {
+            width: 100%;
+            margin: 0.7rem 0;
+            background: #eee;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-size: 1.6rem;
+            color: var(--black, #000); /* Added fallback color */
+            text-transform: none;
+            box-sizing: border-box;
+            border: 1px solid var(--outline, #ccc); /* Added fallback color */
+            outline: none; /* Changed to 'none' for better compatibility */
+            appearance: none; /* Removes default styling */
+            -webkit-appearance: none; /* Safari and Chrome */
+            -moz-appearance: none; /* Firefox */
+        }
+
+            .product-form .styled-select:focus {
+                border-color: var(--outline-hover, #888); /* Added fallback color */
+            }
+
+            .product-form .styled-select option {
+                background: #fff;
+                color: var(--black, #000); /* Added fallback color */
+            }
+
+            /* Optional: Adding a custom arrow */
+            .product-form .styled-select::-ms-expand {
+                display: none; /* Remove default arrow in IE */
+            }
+
+            .product-form .styled-select::after {
+                content: '▼';
+                position: absolute;
+                right: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+            }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grocery Store</title>
@@ -25,9 +67,18 @@
             <input type="text" placeholder="Product Name" class="box" name="ProductName" required>
             <input type="number" placeholder="Product Price" class="box" name="ProductPrice" required>
             <textarea placeholder="Product Description" class="box" name="ProductDescription" required></textarea>
-            <input type="file" accept=".jpeg, .jpg" class="box" name="ProductImage" required>
+            <input type="file" accept=".jpg" class="box" name="ProductImage" required>
+            <select class="styled-select" name="ProductCategory" required>
+                <option disabled selected>Select Product Category</option>
+                <option>Sensors</option>
+                <option>LCD and Displays</option>
+                <option>Boards</option>
+                <option>Kits</option>
+                <option>Prototyping</option>
+            </select>
             <input type="number" placeholder="Available Items" class="box" name="ProductAvailableItems" required>
-            <input type="datetime" class="box" name="ProductDateUpload" value="@DateTime.Now.ToString("yyyy-MM-dd 00:00:00")" />
+            <input type="hidden" placeholder="UserName" class="box" name="UserName" value="@User.Identity.Name" required>
+            <input type="hidden" class="box" name="ProductDateUpload" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" />
 
             <button type="submit" class="btn">Create Product</button>
             <span id="close-product-form">&times;</span>

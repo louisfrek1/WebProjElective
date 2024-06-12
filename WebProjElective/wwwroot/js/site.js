@@ -59,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
             blurBackground.style.display = 'none';
         }
     });
+
+
 });
 
 document.getElementById('user-btn').addEventListener('click', function (event) {
@@ -77,6 +79,7 @@ window.onclick = function (event) {
         }
     }
 }
+
 
 
 //const submitBtn = document.getElementById("submitBtn");

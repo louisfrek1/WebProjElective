@@ -29,8 +29,10 @@ namespace WebProjElective.Models
                         ProductPrice = reader.GetInt32("price"),
                         ProductDescription = reader.GetString("description"),
                         ProductImage = reader["prodimg"] as byte[],
+                        ProductCategory = reader.GetString("category"),
                         ProductAvailableItems = reader.GetInt32("availitems"),
                         ProductDateUpload = reader.GetDateTime("dateupload"),
+                        ProductUserName = reader.GetString("uploaderun")
                     });
                 }
             }
@@ -44,14 +46,16 @@ namespace WebProjElective.Models
             {
                 _mySqlConnection.Open();
                 MySqlCommand command = new MySqlCommand(
-                    "INSERT INTO products (name, price, description, prodimg, availitems, dateupload) " +
-                    "VALUES (@name, @price, @description, @prodimg, @availitems, @dateupload)", _mySqlConnection);
+                    "INSERT INTO products (name, price, description, prodimg,category, availitems, dateupload, uploaderun) " +
+                    "VALUES (@name, @price, @description, @prodimg, @category, @availitems, @dateupload, @uploaderun)", _mySqlConnection);
                 command.Parameters.AddWithValue("@name", product.ProductName);
                 command.Parameters.AddWithValue("@price", product.ProductPrice);
                 command.Parameters.AddWithValue("@description", product.ProductDescription);
                 command.Parameters.AddWithValue("@prodimg", product.ProductImage);
+                command.Parameters.AddWithValue("@category", product.ProductCategory);
                 command.Parameters.AddWithValue("@availitems", product.ProductAvailableItems);
                 command.Parameters.AddWithValue("@dateupload", product.ProductDateUpload);
+                command.Parameters.AddWithValue("@uploaderun", product.ProductUserName);
 
                 int rowsAffected = command.ExecuteNonQuery();
                 return rowsAffected > 0;

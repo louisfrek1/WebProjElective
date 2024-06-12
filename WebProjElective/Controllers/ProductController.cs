@@ -1,16 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebProjElective.Models;
 using System;
+using System.IO;
 
 namespace WebProjElective.Controllers
 {
     public class ProductController : Controller
     {
         private readonly ProductContext _productContext;
+        private readonly UserContext _userContext;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(ProductContext productContext)
+        public ProductController(ProductContext productContext, UserContext userContext)
         {
             _productContext = productContext;
+            _userContext = userContext;
         }
 
         // GET: Products
@@ -23,7 +27,8 @@ namespace WebProjElective.Controllers
         // GET: Products/Create
         public IActionResult CreateForm()
         {
-            return View();
+            var users = _userContext.GetUsersni();
+            return View(users);
         }
 
         public IActionResult Error()
@@ -44,11 +49,14 @@ namespace WebProjElective.Controllers
                 }
             }
 
+            // Set the UserName
+            product.ProductUserName = User.Identity.Name;
+
             bool insertionResult = _productContext.InsertProduct(product);
 
             if (insertionResult)
             {
-                return RedirectToAction("ProductForm","Admin"); // Redirect to product list after successful insertion
+                return RedirectToAction("ProductForm", "Admin"); // Redirect to product list after successful insertion
             }
             else
             {

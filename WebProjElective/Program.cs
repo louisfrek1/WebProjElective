@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using WebProjElective.Models;
+using WebProjElective.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,13 @@ builder.Services.AddTransient<UserContext>(provider =>
     var configuration = provider.GetRequiredService<IConfiguration>();
     var connectionString = configuration.GetConnectionString("DefaultConnection");
     return new UserContext(connectionString);
+});
+
+builder.Services.AddTransient<CartContext>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    return new CartContext(connectionString);
 });
 
 builder.Services.AddTransient<ProductContext>(provider =>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebProjElective.Models.Product>
+﻿@model IEnumerable<WebProjElective.Models.Product>;
 
 @{
     ViewBag.Title = "Products";
@@ -18,6 +18,7 @@
                 <th>Image</th>
                 <th>Available Items</th>
                 <th>Date Uploaded</th>
+                <th>Uploader</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -37,6 +38,7 @@
                     </td>
                     <td>@product.ProductAvailableItems</td>
                     <td>@product.ProductDateUpload.ToShortDateString()</td>
+                    <td>@product.ProductUserName</td>
                     <td>
                         <form method="get" action="@Url.Action("UpdateEnrollmentForm", "Product", new { id = product.ProductId})">
                             <button type="submit" class="btn btn-primary">UPDATE</button>
@@ -45,6 +47,7 @@
                             <button type="submit" class="btn btn-danger">DELETE</button>
                         </form>
                     </td>
+                    
                 </tr>
             }
         </tbody>

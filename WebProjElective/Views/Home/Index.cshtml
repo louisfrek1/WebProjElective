@@ -35,6 +35,8 @@
             <label for="search-box" class="fas fa-search"></label>
         </form>
 
+        
+
         <form action="/Home/Login" method="post" class="login-form" id="login-form">
             <h3>SIGN IN</h3>
             <input type="email" name="email" placeholder="email" class="box" required>
@@ -122,17 +124,64 @@
                             <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
                             <h3>@product.ProductName</h3>
                             <div class="price">@product.ProductPrice</div>
-                            <a href="#" class="btn">add to cart</a>
+                            <a href="#" class="btn add-to-cart">add to cart</a>
                         </div>
                     </div>
                 }
             </div>
         </div>
     </section>
-    <main>
-        <!-- Success and error messages -->
-        
+    <section class="categories" id="categories">
+        <h1 class="heading">product <span>categories</span></h1>
+        <div class="swiper category-slider">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="box">
+                        <img src="/images/apples.png" alt="Sensors">
+                        <h3>Sensors</h3>
+                        <p>upto 45% off</p>
+                        <a href="#" class="btn">shop now</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="box">
+                        <img src="~/images/fastdelivery-logo.png" alt="LCD and Displays">
+                        <h3>LCD and Displays</h3>
+                        <p>upto 45% off</p>
+                        <a href="#" class="btn">shop now</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="box">
+                        <img src="~/images/banana.png" alt="Boards">
+                        <h3>Boards</h3>
+                        <p>upto 45% off</p>
+                        <a href="#" class="btn">shop now</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="box">
+                        <img src="~/images/grocerylogo.png" alt="Kits">
+                        <h3>Kits</h3>
+                        <p>upto 45% off</p>
+                        <a href="#" class="btn">shop now</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="box">
+                        <img src="~/images/original-logo.png" alt="Prototyping">
+                        <h3>Prototyping</h3>
+                        <p>upto 45% off</p>
+                        <a href="#" class="btn">shop now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <main>
+        <input type="hidden" id="isLoggedIn" value="false">
+        <!-- Success and error messages -->
         <!-- Your main content goes here -->
     </main>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -140,6 +189,20 @@
     <script src="site.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            var addToCartButtons = document.querySelectorAll('.add-to-cart');
+            var isLoggedIn = document.getElementById('isLoggedIn').value === 'true';
+
+            addToCartButtons.forEach(function (button) {
+                button.addEventListener('click', function (event) {
+            event.preventDefault();
+            if (!isLoggedIn) {
+                alert("You have to log in.");
+            } else {
+                // Add to cart logic here
+            }
+        });
+    });
+
             var swiper = new Swiper(".product-slider", {
                 loop: true,
                 spaceBetween: 20,
@@ -160,6 +223,27 @@
                     },
                 },
             });
+            var categorySwiper = new Swiper(".category-slider", {
+                loop: true,
+                spaceBetween: 20,
+                autoplay: {
+                    delay: 7500,
+                    disableOnInteraction: false,
+                },
+                centeredSlides: true,
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1020: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+
         });
     </script>
 </body>

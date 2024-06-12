@@ -28,7 +28,8 @@ namespace WebProjElective.Controllers
 
         public IActionResult Dashboard()
         {
-            return View();
+            var products = _productContext.GetProducts().Take(10).ToList();
+            return View(products);
         }
 
 
@@ -51,6 +52,8 @@ namespace WebProjElective.Controllers
             }
             return RedirectToAction("Index");
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)

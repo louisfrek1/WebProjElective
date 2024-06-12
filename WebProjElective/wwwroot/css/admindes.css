@@ -1,6 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Tiny5&display=swap');
-
-:root {
+﻿:root {
     --orange: #ff7800;
     --black: #130f40;
     --light-color: #666;
@@ -90,8 +88,6 @@ body {
         background-color: var(--black);
         color: #fff;
     }
-
-/* Existing CSS */
 
 .table {
     width: 100%;
@@ -209,6 +205,23 @@ body {
 
         .product-form input.box:focus,
         .product-form textarea.box:focus {
+            outline: var(--outline-hover);
+        }
+
+    .product-form select.box {
+        width: 100%;
+        margin: .7rem 0;
+        background: #eee;
+        border-radius: .5rem;
+        padding: 1rem;
+        font-size: 1.6rem;
+        color: var(--black);
+        text-transform: none;
+        box-sizing: border-box;
+        border: 1px solid var(--outline); /* Add border property */
+    }
+
+        .product-form select.box:focus {
             outline: var(--outline-hover);
         }
 
