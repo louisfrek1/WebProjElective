@@ -7,7 +7,7 @@
         public string ProductDescription { get; set; }
         public byte[] ProductImage { get; set; }
         public string ProductCategory { get; set; }
-        public decimal ProductPrice { get; set; }
+        public int ProductPrice { get; set; }
         public int ProductAvailableItems { get; set; }
         public DateTime ProductDateUpload { get; set; }
         public string ProductUserName { get; set; }

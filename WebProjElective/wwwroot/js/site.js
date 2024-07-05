@@ -16,6 +16,12 @@ document.querySelector('#menu-btn').onclick = () => {
     navbar.classList.toggle('active');
 }
 
+let shoppingCart = document.querySelector('.shopping-cart');
+
+document.querySelector('#cart-btn').onclick = () => {
+    shoppingCart.classList.toggle('active');
+}
+
 window.onclick = (event) => {
     if (!event.target.closest('.search-form') && !event.target.closest('#search-btn')) {
         searchForm.classList.remove('active');
@@ -25,6 +31,9 @@ window.onclick = (event) => {
     }
     if (!event.target.closest('.navbar') && !event.target.closest('#menu-btn')) {
         navbar.classList.remove('active');
+    }
+    if (!event.target.closest('.shopping-cart') && !event.target.closest('#cart-btn')) {
+        shoppingCart.classList.remove('active');
     }
 }
 document.addEventListener('DOMContentLoaded', function () {
@@ -79,6 +88,7 @@ window.onclick = function (event) {
         }
     }
 }
+
 
 
 

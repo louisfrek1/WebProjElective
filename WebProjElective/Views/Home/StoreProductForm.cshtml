@@ -1,0 +1,331 @@
+﻿@model WebProjElective.Models.CartProductModel
+
+
+@{
+    ViewData["Title"] = "Product Categories";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Categories</title>
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .category-section {
+            padding: 2rem;
+            background: #fff;
+        }
+
+            .category-section .heading {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+                .category-section .heading span {
+                    color: var(--black);
+                }
+
+            .category-section .category-slider {
+                width: 100%;
+                padding: 1rem;
+            }
+
+                .category-section .category-slider .swiper-wrapper {
+                    display: flex;
+                }
+
+                .category-section .category-slider .swiper-slide {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-bottom: 2rem;
+                }
+
+                .category-section .category-slider .box {
+                    background: #fff;
+                    border-radius: .5rem;
+                    text-align: center;
+                    padding: 3rem 2rem;
+                    outline-offset: -1rem;
+                    outline: var(--outline);
+                    box-shadow: var(--box-shadow);
+                    transition: .2s linear;
+                    width: 300px;
+                }
+
+                    .category-section .category-slider .box:hover {
+                        outline-offset: 0rem;
+                        outline: var(--outline);
+                    }
+
+                    .category-section .category-slider .box img {
+                        height: 20rem;
+                        object-fit: cover;
+                    }
+
+                    .category-section .category-slider .box h3 {
+                        font-size: 2.5rem;
+                        color: var(--black);
+                    }
+
+                    .category-section .category-slider .box .price {
+                        font-size: 2rem;
+                        color: var(--light-color);
+                        padding: .5rem 0;
+                    }
+
+                    .category-section .category-slider .box .btn {
+                        display: inline-block;
+                        padding: 1rem 2rem;
+                        background: var(--orange);
+                        color: #fff;
+                        text-decoration: none;
+                        border-radius: .5rem;
+                        transition: .3s;
+                    }
+
+                        .category-section .category-slider .box .btn:hover {
+                            background: var(--light-color);
+                        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="~/images/grocerylogo.png" alt=""> Hehehe
+        </a>
+        <nav class="navbar">
+            <a href="/Home/Dashboard">Home</a>
+            <a href="#features">Features</a>
+            <a href="#categories">Categories</a>
+        </nav>
+
+        <div class="icons">
+            <a href="#" class="icon"><i class="fas fa-bars" id="menu-btn"></i></a>
+            <a href="#" class="icon"><i class="fas fa-search" id="search-btn"></i></a>
+            <a href="#" class="icon"><i class="fas fa-shopping-cart" id="cart-btn"></i></a>
+            <div class="user-info-container">
+                <button class="user-info-button" id="user-btn">
+                    <i class="fas fa-user" id="login-btn"></i>
+                </button>
+                <div class="user-info-dropdown" id="user-info">
+                    <a href="#"><i class="fas fa-user"></i>Profile</a>
+                    <a href="#"><i class="fas fa-box"></i>Orders</a>
+                    <a href="#"><i class="fas fa-info-circle"></i>Account Info</a>
+                    <a href="/Home/Logout"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="shopping-cart">
+            @if (Model.CartItems != null && Model.CartItems.Any())
+            {
+                @foreach (var cart in Model.CartItems)
+                {
+                    <div class="box">
+                        <i class="fas fa-trash"></i>
+                        <img src="data:image;base64,@Convert.ToBase64String(cart.ProdImage)" alt="@cart.ProdName" />
+                        <div class="content">
+                            <h3>@cart.ProdName</h3>
+                            <span class="price">@cart.ProdPrice</span>
+                            <span class="quantity">qty : 1</span>
+                        </div>
+                    </div>
+                }
+
+                <div class="total">total : Php @Model.CartItems.Sum(cart => cart.ProdPrice)</div>
+                <a href="#" class="btn">Checkout</a>
+            }
+            else
+            {
+                <p>Your cart is empty.</p>
+            }
+        </div>
+
+        <form action="/Home/Login" method="post" class="search-form">
+            <input type="search" id="search-box" placeholder="search here....">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+    </header>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <span class="close-btn">&times;</span>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <span class="close-btn">&times;</span>
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <h1 class="heading">Product <span>Categories</span></h1>
+    <form>
+        <label for="category-dropdown">Choose a category:</label>
+        <select id="category-dropdown">
+            <option value="">Select a category</option>
+            <option value="sensors">Sensors</option>
+            <option value="lcd and displays">LCD and Displays</option>
+            <option value="boards">Boards</option>
+            <option value="kits">Kits</option>
+            <option value="prototyping">Prototyping</option>
+        </select>
+    </form>
+
+    <!-- Display products based on selected category -->
+    <div class="category-section" id="sensors">
+        <h2>Sensors</h2>
+        <div class="swiper category-slider">
+            <div class="swiper-wrapper">
+                @foreach (var product in Model.Products.Where(p => p.ProductCategory == "Sensors"))
+                {
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
+                            <h3>@product.ProductName</h3>
+                            <div class="price">@product.ProductPrice</div>
+                            <form asp-controller="Home" asp-action="StoreProductForm" method="post">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <button type="submit" class="btn">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="category-section" id="lcd and displays">
+        <h2>LCD and Displays</h2>
+        <div class="swiper category-slider">
+            <div class="swiper-wrapper">
+                @foreach (var product in Model.Products.Where(p => p.ProductCategory == "LCD and Displays"))
+                {
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
+                            <h3>@product.ProductName</h3>
+                            <div class="price">@product.ProductPrice</div>
+                            <form asp-controller="Home" asp-action="StoreProductForm" method="post">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <button type="submit" class="btn">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="category-section" id="boards">
+        <h2>Boards</h2>
+        <div class="swiper category-slider">
+            <div class="swiper-wrapper">
+                @foreach (var product in Model.Products.Where(p => p.ProductCategory == "Boards"))
+                {
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
+                            <h3>@product.ProductName</h3>
+                            <div class="price">@product.ProductPrice</div>
+                            <form asp-controller="Home" asp-action="StoreProductForm" method="post">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <button type="submit" class="btn">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="category-section" id="kits">
+        <h2>Kits</h2>
+        <div class="swiper category-slider">
+            <div class="swiper-wrapper">
+                @foreach (var product in Model.Products.Where(p => p.ProductCategory == "Kits"))
+                {
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
+                            <h3>@product.ProductName</h3>
+                            <div class="price">@product.ProductPrice</div>
+                            <form asp-controller="Home" asp-action="StoreProductForm" method="post">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <button type="submit" class="btn">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="category-section" id="prototyping">
+        <h2>Prototyping</h2>
+        <div class="swiper category-slider">
+            <div class="swiper-wrapper">
+                @foreach (var product in Model.Products.Where(p => p.ProductCategory == "Prototyping"))
+                {
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="@product.ProductName">
+                            <h3>@product.ProductName</h3>
+                            <div class="price">@product.ProductPrice</div>
+                            <form asp-controller="Home" asp-action="StoreProductForm" method="post">
+                                <input type="hidden" name="productId" value="@product.ProductId" />
+                                <button type="submit" class="btn">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <main>
+        <input type="hidden" id="userName" value="@User.Identity.Name">
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="site.js"></script>
+    <script>
+        document.getElementById('category-dropdown').addEventListener('change', function () {
+            var selectedValue = this.value;
+            if (selectedValue) {
+                window.location.href = "/Home/StoreProductForm?category=" + selectedValue;
+            }
+        });
+
+        // Initialize Swiper sliders
+        document.addEventListener('DOMContentLoaded', function () {
+            var categorySwiper = new Swiper(".category-slider", {
+                loop: true,
+                spaceBetween: 20,
+                autoplay: {
+                    delay: 7500,
+                    disableOnInteraction: false,
+                },
+                centeredSlides: true,
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1020: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+        });
+    </script>
+</body>
+</html>

@@ -5,6 +5,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using WebProjElective.Models;
 using WebProjElective.Controllers;
+using Microsoft.EntityFrameworkCore;
+using WebProjElective.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,12 @@ builder.Services.AddTransient<UserContext>(provider =>
     var connectionString = configuration.GetConnectionString("DefaultConnection");
     return new UserContext(connectionString);
 });
+
+builder.Services.AddDbContext<ProductnCart>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 21)) // Replace with your MySQL version
+    ));
 
 builder.Services.AddTransient<CartContext>(provider =>
 {

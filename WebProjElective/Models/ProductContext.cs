@@ -1,6 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
 
 namespace WebProjElective.Models
 {
@@ -46,7 +48,7 @@ namespace WebProjElective.Models
             {
                 _mySqlConnection.Open();
                 MySqlCommand command = new MySqlCommand(
-                    "INSERT INTO products (name, price, description, prodimg,category, availitems, dateupload, uploaderun) " +
+                    "INSERT INTO products (name, price, description, prodimg, category, availitems, dateupload, uploaderun) " +
                     "VALUES (@name, @price, @description, @prodimg, @category, @availitems, @dateupload, @uploaderun)", _mySqlConnection);
                 command.Parameters.AddWithValue("@name", product.ProductName);
                 command.Parameters.AddWithValue("@price", product.ProductPrice);
@@ -71,6 +73,63 @@ namespace WebProjElective.Models
             {
                 _mySqlConnection.Close();
             }
+        }
+
+        public List<Product> GetProductsByCategory(string category)
+        {
+            List<Product> products = new List<Product>();
+            _mySqlConnection.Open();
+            MySqlCommand command = new MySqlCommand("SELECT * FROM products WHERE category = @category", _mySqlConnection);
+            command.Parameters.AddWithValue("@category", category);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    products.Add(new Product
+                    {
+                        ProductId = reader.GetInt32("idproducts"),
+                        ProductName = reader.GetString("name"),
+                        ProductPrice = reader.GetInt32("price"),
+                        ProductDescription = reader.GetString("description"),
+                        ProductImage = reader["prodimg"] as byte[],
+                        ProductCategory = reader.GetString("category"),
+                        ProductAvailableItems = reader.GetInt32("availitems"),
+                        ProductDateUpload = reader.GetDateTime("dateupload"),
+                        ProductUserName = reader.GetString("uploaderun")
+                    });
+                }
+            }
+            _mySqlConnection.Close();
+            return products;
+        }
+
+        public async Task<Product> GetProductByIdAsync(int productId)
+        {
+            await _mySqlConnection.OpenAsync();
+            MySqlCommand command = new MySqlCommand("SELECT * FROM products WHERE idproducts = @productId", _mySqlConnection);
+            command.Parameters.AddWithValue("@productId", productId);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                if (await reader.ReadAsync())
+                {
+                    return new Product
+                    {
+                        ProductId = reader.GetInt32("idproducts"),
+                        ProductName = reader.GetString("name"),
+                        ProductPrice = reader.GetInt32("price"),
+                        ProductDescription = reader.GetString("description"),
+                        ProductImage = reader["prodimg"] as byte[],
+                        ProductCategory = reader.GetString("category"),
+                        ProductAvailableItems = reader.GetInt32("availitems"),
+                        ProductDateUpload = reader.GetDateTime("dateupload"),
+                        ProductUserName = reader.GetString("uploaderun")
+                    };
+                }
+            }
+
+            _mySqlConnection.Close();
+            return null;
         }
     }
 }

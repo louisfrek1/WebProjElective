@@ -7,11 +7,13 @@ namespace WebProjElective.Controllers
     {
         private readonly ProductContext _productContext;
         private readonly UserContext _userContext;
+        private readonly CartContext _cartContext;
 
-        public AdminController(ProductContext productContext, UserContext userContext)
+        public AdminController(ProductContext productContext, UserContext userContext, CartContext cartContext)
         {
             _productContext = productContext;
             _userContext = userContext;
+            _cartContext = cartContext;
         }
         public IActionResult AdminForm()
         {
@@ -37,7 +39,8 @@ namespace WebProjElective.Controllers
 
         public IActionResult OrdersForm()
         {
-            return View();
+            var carts = _cartContext.GetOrders();
+            return View(carts);
         }
         public IActionResult UpdateAccForm()
         {

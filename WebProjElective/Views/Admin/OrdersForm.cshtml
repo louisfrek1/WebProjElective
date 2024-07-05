@@ -1,0 +1,62 @@
+﻿@model List<Cart>
+
+@{
+    ViewBag.Title = "Orders";
+}
+@* <link rel="stylesheet" href="~/css/admindes.css"> *@
+
+<h2>ADMIN PANEL ||| Orders</h2>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Product Price</th>
+                <th>Product Image</th>
+                <th>Product Category</th>
+                <th>Date Ordered</th>
+                <th>Customer Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cart in Model)
+            {
+                <tr>
+                    <td>@cart.OrderId</td>
+                    <td>@cart.ProdId</td>
+                    <td>@cart.ProdName</td>
+                    <td>@cart.ProdPrice</td>
+                    <td>
+                        @if (cart.ProdImage != null)
+                        {
+                            <img src="data:image;base64,@(Convert.ToBase64String(cart.ProdImage))" class="product-image" />
+                        }
+                    </td>
+                    <td>@cart.ProdCategory</td>
+                    <td>@cart.ProdDateTime.ToShortDateString()</td>
+                    <td>@cart.Username</td>
+                    <td>
+                        <form method="get" action="@Url.Action("UpdateEnrollmentForm", "Product", new { id = cart.OrderId})">
+                            <button type="submit" class="btn btn-primary">UPDATE</button>
+                        </form>
+                        <form method="post" action="@Url.Action("DeleteStudent", "Product", new { id = cart.OrderId})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
+                            <button type="submit" class="btn btn-danger">DELETE</button>
+                        </form>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    .container .table .product-image {
+        max-width: 80px; /* Adjust the maximum width as needed */
+        max-height: 50px; /* Adjust the maximum height as needed */
+        width: auto; /* Maintain aspect ratio */
+        height: auto; /* Maintain aspect ratio */
+    }
+</style>
