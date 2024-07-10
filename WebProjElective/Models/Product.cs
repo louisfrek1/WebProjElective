@@ -11,6 +11,5 @@
         public int ProductAvailableItems { get; set; }
         public DateTime ProductDateUpload { get; set; }
         public string ProductUserName { get; set; }
-
     }
 }

@@ -1,0 +1,112 @@
+﻿@using System.Security.Claims
+@model List<Cart>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Store</title>
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="~/images/grocerylogo.png" alt=""> Hehehe
+        </a>
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#categories">Categories</a>
+        </nav>
+
+        <div class="icons">
+            <a href="#" class="icon"><i class="fas fa-bars" id="menu-btn"></i></a>
+            <a href="#" class="icon"><i class="fas fa-search" id="search-btn"></i></a>
+            <a href="#" class="icon"><i class="fas fa-shopping-cart" id="cart-btn"></i></a>
+            <div class="user-info-container">
+                <button class="user-info-button" id="user-btn">
+                    <i class="fas fa-user" id="login-btn"></i>
+                    @* <img src="~/images/user-pflaceholder.png"> *@
+                </button>
+                <div class="user-info-dropdown" id="user-info">
+                    <a href="#"><i class="fas fa-user"></i>Profile</a>
+                    <a href="#"><i class="fas fa-box"></i>Orders</a>
+                    <a href="#"><i class="fas fa-info-circle"></i>Account Info</a>
+                    <a href="/Home/Logout"><i class="fas fa-sign-out-alt"></i>Log Out</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="shopping-cart">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var cart in Model)
+                {
+                    <div class="box">
+                        <i class="fas fa-trash"></i>
+                        <img src="data:image;base64,@Convert.ToBase64String(cart.ProdImage)" alt="@cart.ProdName" />
+                        <div class="content">
+                            <h3>@cart.ProdName</h3>
+                            <span class="price">@cart.ProdPrice</span>
+                            <span class="quantity">qty : 1</span>
+                        </div>
+                    </div>
+                }
+
+                <div class="total">total : Php @Model.Sum(cart => cart.ProdPrice)</div>
+                <a href="#" class="btn">Checkout</a>
+            }
+            else
+            {
+                <p>Your cart is empty.</p>
+            }
+        </div>
+
+        <form action="/Home/Login" method="post" class="search-form">
+            <input type="search" id="search-box" placeholder="search here....">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+
+
+    </header>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <span class="close-btn">&times;</span>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <span class="close-btn">&times;</span>
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <!-- Home Section ni dria-->
+
+
+    <main>
+        <input type="hidden" id="userId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+        <!-- Success and error messages -->
+        <section id="profile" class="profile-section">
+            <h2>User Profile</h2>
+            <div class="profile-details">
+                <p><strong>Name:</strong> @User.FindFirst("Name")?.Value</p>
+                <p><strong>Email:</strong> @User.FindFirst(ClaimTypes.Email)?.Value</p>
+                <p><strong>Address:</strong> @User.FindFirst("Address")?.Value</p>
+                <p><strong>Phone:</strong> @User.FindFirst("Phone")?.Value</p>
+                <a href="#" class="btn">Edit Profile</a>
+            </div>
+        </section>
+        <!-- Your main content goes here -->
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="site.js"></script>
+</body>
+</html>

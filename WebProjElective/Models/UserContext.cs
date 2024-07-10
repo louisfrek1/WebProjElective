@@ -21,7 +21,7 @@ namespace WebProjElective.Models
                 _mySqlConnection.Open();
                 MySqlCommand command = new MySqlCommand(
                     @"INSERT INTO users (username, password, email, accttype)
-                      VALUES(@uname, @pass, @mail, 'user')", _mySqlConnection);
+                      VALUES(@uname, @pass, @mail, @accttype)", _mySqlConnection);
                 command.Parameters.AddWithValue("@uname", user.UserName);
                 command.Parameters.AddWithValue("@pass", user.Password);
                 command.Parameters.AddWithValue("@mail", user.Email);
@@ -36,6 +36,7 @@ namespace WebProjElective.Models
                 return false;
             }
         }
+
         public List<Users> GetUsersni()
         {
             List<Users> users = new List<Users>();
@@ -108,5 +109,70 @@ namespace WebProjElective.Models
             return users;
         }
 
+        public Users GetUsersById(int id)
+        {
+            Users users = null;
+            _mySqlConnection.Open();
+            MySqlCommand command = new MySqlCommand("SELECT * FROM users WHERE idusers = @id", _mySqlConnection);
+            command.Parameters.AddWithValue("@id", id);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    users = new Users
+                    {
+                        Id = reader.GetInt32("idusers"),
+                        UserName = reader.GetString("username"),
+                        Email = reader.GetString("email"),
+                        AcctType = reader.GetString("accttype")
+                    };
+                }
+            }
+            _mySqlConnection.Close();
+            return users;
+        }
+
+        public bool UpdateUser(Users users)
+        {
+            try
+            {
+                _mySqlConnection.Open();
+                MySqlCommand command = new MySqlCommand(
+                    @"UPDATE users SET username = @un, email = @email, accttype = @acc
+                        WHERE idusers = @id", _mySqlConnection);
+                command.Parameters.AddWithValue("@id", users.Id);
+                command.Parameters.AddWithValue("@un", users.UserName);
+                command.Parameters.AddWithValue("@email", users.Email);
+                command.Parameters.AddWithValue("@acc", users.AcctType);
+
+                int rowsAffected = command.ExecuteNonQuery();
+                _mySqlConnection.Close();
+
+                return rowsAffected > 0;
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+
+        public bool DeleteUser(int id)
+        {
+            try
+            {
+                _mySqlConnection.Open();
+                MySqlCommand sqlCommand = new MySqlCommand("DELETE FROM users WHERE idusers = @id", _mySqlConnection);
+                sqlCommand.Parameters.AddWithValue("@id", id);
+                int rowAffected = sqlCommand.ExecuteNonQuery();
+                return rowAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting student: {ex.Message}");
+                return false;
+            }
+        }
     }
+
+
 }

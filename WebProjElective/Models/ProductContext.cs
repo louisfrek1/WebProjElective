@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -131,5 +132,65 @@ namespace WebProjElective.Models
             _mySqlConnection.Close();
             return null;
         }
+
+        public bool UpdateProduct(Product product)
+        {
+            try
+            {
+                _mySqlConnection.Open();
+                MySqlCommand command = new MySqlCommand(
+                    @"UPDATE products SET name=@name, price=@price, description=@description,
+                availitems=@availitems, category=@category, dateupload=@dateupload
+                WHERE idproducts=@id", _mySqlConnection);
+
+                command.Parameters.AddWithValue("@id", product.ProductId);
+                command.Parameters.AddWithValue("@name", product.ProductName);
+                command.Parameters.AddWithValue("@price", product.ProductPrice);
+                command.Parameters.AddWithValue("@description", product.ProductDescription);
+                command.Parameters.AddWithValue("@availitems", product.ProductAvailableItems);
+                command.Parameters.AddWithValue("@category", product.ProductCategory);
+                command.Parameters.AddWithValue("@dateupload", product.ProductDateUpload);
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    Console.WriteLine($"UpdateProduct: {rowsAffected} row(s) updated successfully.");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("UpdateProduct: No rows affected. Check if the product exists.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UpdateProduct Error: " + ex.Message);
+                Console.WriteLine("Stack Trace: " + ex.StackTrace);
+                return false;
+            }
+            finally
+            {
+                _mySqlConnection.Close();
+            }
+        }
+
+        public bool DeleteProduct(int id)
+        {
+            try
+            {
+                _mySqlConnection.Open();
+                MySqlCommand sqlCommand = new MySqlCommand("DELETE FROM products WHERE idproducts = @id", _mySqlConnection);
+                sqlCommand.Parameters.AddWithValue("@id", id);
+                int rowAffected = sqlCommand.ExecuteNonQuery();
+                return rowAffected > 0;
+            }catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting Product: {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }

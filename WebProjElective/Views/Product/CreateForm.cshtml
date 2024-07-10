@@ -58,7 +58,7 @@
         <header>
             <h1>Admin Panel</h1>
             <div class="logout-icon">
-                <img src="~/images/logout-icon.png" alt="Logout">
+                <img src="~/images/back-icon.png" alt="Logout">
             </div>
         </header>
         <form method="post" class="product-form" id="product-form" enctype="multipart/form-data">
@@ -86,5 +86,21 @@
     </div>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="scripts.js"></script>
+    <script>
+        function handleBackClick() {
+            // Perform logout operation
+
+            // Redirect to another form
+            window.location.href = '@Url.Action("AdminForm", "Admin")';
+        }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelector(".logout-icon").addEventListener("click", function () {
+                    // Perform logout action or redirect to another page
+                    // For example, redirecting to a logout endpoint
+                    window.location.href = "/Admin/ProductForm"; // Replace with your logout URL
+                });
+            });
+    </script>
 </body>
 </html>

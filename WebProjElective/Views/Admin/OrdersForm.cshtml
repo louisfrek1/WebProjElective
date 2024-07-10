@@ -4,8 +4,13 @@
     ViewBag.Title = "Orders";
 }
 @* <link rel="stylesheet" href="~/css/admindes.css"> *@
+<header>
+    <h2>ADMIN PANEL ||| Orders</h2>
+    <div class="logout-icon">
+        <img src="~/images/back-icon.png" alt="Logout">
+    </div>
+</header>
 
-<h2>ADMIN PANEL ||| Orders</h2>
 <div class="container">
     <table class="table table-striped">
         <thead>
@@ -39,10 +44,7 @@
                     <td>@cart.ProdDateTime.ToShortDateString()</td>
                     <td>@cart.Username</td>
                     <td>
-                        <form method="get" action="@Url.Action("UpdateEnrollmentForm", "Product", new { id = cart.OrderId})">
-                            <button type="submit" class="btn btn-primary">UPDATE</button>
-                        </form>
-                        <form method="post" action="@Url.Action("DeleteStudent", "Product", new { id = cart.OrderId})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
+                        <form method="post" action="@Url.Action("DeleteOrder", "Admin", new { id = cart.OrderId})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
                             <button type="submit" class="btn btn-danger">DELETE</button>
                         </form>
                     </td>
@@ -59,4 +61,34 @@
         width: auto; /* Maintain aspect ratio */
         height: auto; /* Maintain aspect ratio */
     }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+        header .logout-icon {
+            position: absolute;
+            top: 0;
+            right: 10px; /* Adjust as needed */
+        }
+
+            header .logout-icon img {
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+            }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".logout-icon").addEventListener("click", function () {
+            // Perform logout action or redirect to another page
+            // For example, redirecting to a logout endpoint
+            window.location.href = "/Admin/AdminForm"; // Replace with your logout URL
+        });
+    });
+</script>
+

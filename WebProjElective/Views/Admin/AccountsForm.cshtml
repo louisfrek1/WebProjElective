@@ -4,8 +4,12 @@
     ViewBag.Title = "Accounts";
 }
 @* <link rel="stylesheet" href="~/css/admindes.css"> *@
-
-<h2>ADMIN PANEL ||| Accounts</h2>
+<header>
+    <h2>ADMIN PANEL ||| Accounts</h2>
+    <div class="logout-icon">
+        <img src="~/images/back-icon.png" alt="Logout">
+    </div>
+</header>
 
 <div class="container">
     <table class="table">
@@ -28,10 +32,10 @@
                     <td>@user.Email</td>
                     <td>@user.AcctType</td> <!-- Adjust property name based on your model -->
                     <td>
-                        <form method="get" action="@Url.Action("UpdateEnrollmentForm", "Product", new { id = user.Id})">
+                        <form method="get" action="@Url.Action("UpdateAccForm", "Admin", new { id = user.Id})">
                             <button type="submit" class="btn btn-primary">UPDATE</button>
                         </form>
-                        <form method="post" action="@Url.Action("DeleteStudent", "Product", new { id = user.Id})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
+                        <form method="post" action="@Url.Action("DeleteUser", "Admin", new { id = user.Id})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
                             <button type="submit" class="btn btn-danger">DELETE</button>
                         </form>
                     </td>
@@ -42,3 +46,40 @@
     </table>
 
 </div>
+
+<style>
+    .container .table .product-image {
+        max-width: 80px; /* Adjust the maximum width as needed */
+        max-height: 50px; /* Adjust the maximum height as needed */
+        width: auto; /* Maintain aspect ratio */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+        header .logout-icon {
+            position: absolute;
+            top: 0;
+            right: 10px; /* Adjust as needed */
+        }
+
+            header .logout-icon img {
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+            }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".logout-icon").addEventListener("click", function () {
+            // Perform logout action or redirect to another page
+            // For example, redirecting to a logout endpoint
+            window.location.href = "/Admin/AdminForm"; // Replace with your logout URL
+        });
+    });
+</script>

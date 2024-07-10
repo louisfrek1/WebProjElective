@@ -13,16 +13,33 @@
 </head>
 
 <body>
+    
     <body>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                <span class="close-btn">&times;</span>
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <span class="close-btn">&times;</span>
+                @TempData["ErrorMessage"]
+            </div>
+        }
         <div class="admin-panel">
             <header>
                 <h1>Admin Panel</h1>
-                <div class="logout-icon">
+                <div class="back-icon" onclick="handleBackClick()">
+                    <img src="~/images/back-icon.png" alt="Back">
+                </div>
+                <div class="logout-icon" onclick="logout()">
                     <img src="~/images/logout-icon.png" alt="Logout">
                 </div>
             </header>
             <nav>
-                <button class="nav-button" onclick="redirectTo('@Url.Action("Profile", "Admin")')">Profile</button>
                 <button class="nav-button" onclick="redirectTo('@Url.Action("AccountsForm", "Admin")')">Accounts</button>
                 <button class="nav-button" onclick="redirectTo('@Url.Action("OrdersForm", "Admin")')">Orders</button>
                 <button class="nav-button" onclick="redirectTo('@Url.Action("ProductForm", "Admin")')">Products</button>
@@ -31,6 +48,19 @@
         <script>
             function redirectTo(url) {
                 window.location.href = url;
+            }
+            function logout() {
+                // Perform logout operation
+                // Redirect to logout action
+                window.location.href = '@Url.Action("Index", "Home")';
+            }
+
+            function handleBackClick() {
+                // Perform logout operation
+                logout();
+
+                // Redirect to another form
+                window.location.href = '@Url.Action("Index", "Home")';
             }
         </script>
     </body>

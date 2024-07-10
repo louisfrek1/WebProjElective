@@ -37,6 +37,11 @@ namespace WebProjElective.Controllers
             return View(products);
         }
 
+        public IActionResult ProfileForm()
+        {
+            return View();
+        }
+
         public IActionResult Dashboard()
         {
             var username = User.Identity.Name;
@@ -73,11 +78,10 @@ namespace WebProjElective.Controllers
 
         // POST: Home/Register
         [HttpPost]
-        public IActionResult Register(Users user)
+        public IActionResult Index(Users user)
         {
             if (ModelState.IsValid)
             {
-                // Insert user into database
                 bool isSuccess = _userContext.InsertUsers(user);
                 if (isSuccess)
                 {

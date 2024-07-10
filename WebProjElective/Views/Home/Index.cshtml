@@ -47,11 +47,12 @@
         </form>
         <div id="blur-background" class="blur-background"></div>
         <!-- Registration Form -->
-        <form action="/Home/Register" method="post" class="registration-form" id="registration-form">
+        <form action="/Home/Index" method="post" class="registration-form" id="registration-form">
             <h3>REGISTER</h3>
             <input type="text" placeholder="username" class="box" name="UserName" required>
             <input type="email" placeholder="email" class="box" name="Email" required>
             <input type="password" placeholder="password" class="box" name="Password" required>
+            <input type="hidden" placeholder="account type" class="box" name="AcctType" value="user"></input>
             <button type="submit" class="btn">Register Now</button>
             <span id="close-registration">&times;</span>
         </form>

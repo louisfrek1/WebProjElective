@@ -115,5 +115,21 @@ namespace WebProjElective.Models
             return carts;
         }
 
+        public bool DeleteOrder(int id)
+        {
+            try
+            {
+                _mySqlConnection.Open();
+                MySqlCommand sqlCommand = new MySqlCommand("DELETE FROM oncarts WHERE idoncarts = @ID", _mySqlConnection);
+                sqlCommand.Parameters.AddWithValue("@ID", id);
+                int rowAffected = sqlCommand.ExecuteNonQuery();
+                return rowAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting student: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

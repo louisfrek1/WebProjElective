@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Update Account";
+﻿
+@{
+    ViewBag.Title = "Create Product";
 }
 
 <html lang="en">
@@ -79,19 +80,30 @@
             </div>
         </header>
         <form method="post" class="product-form" id="product-form" enctype="multipart/form-data">
-            <h3>ACCOUNTS INFORMATION</h3>
+            <h3>PRODUCT INFORMATION</h3>
 
             <div class="product-info">
-                <label>Account ID:</label>
-                <input type="type" name="Id" value="@Model.Id"></input>
+                <label>Product ID:</label>
+                <input type="type" name="ProductId" value="@Model.ProductId"></input>
             </div>
-            <input type="text" placeholder="Username" class="box" name="UserName" value="@Model.UserName" required>
-            <input type="email" placeholder="Email" class="box" name="Email" value="@Model.Email" required />
-            <select class="styled-select" name="AcctType" required>
-                <option>@Model.AcctType</option>
-                <option>admin</option>
-                <option>user</option>
+            @if (@Model.ProductImage != null)
+            {
+                <img src="data:image;base64,@(Convert.ToBase64String(@Model.ProductImage))" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+            }
+            <input type="text" placeholder="Product Name" class="box" name="ProductName" value="@Model.ProductName" required>
+            <input type="number" placeholder="Product Price" class="box" name="ProductPrice" value="@Model.ProductPrice" required>
+            <textarea placeholder="Product Description" class="box" name="ProductDescription">@Model.ProductDescription</textarea>
+            <select class="styled-select" name="ProductCategory" required>
+                <option>@Model.ProductCategory</option>
+                <option>Sensors</option>
+                <option>LCD and Displays</option>
+                <option>Boards</option>
+                <option>Kits</option>
+                <option>Prototyping</option>
             </select>
+            <input type="number" placeholder="Available Items" class="box" name="ProductAvailableItems" value="@Model.ProductAvailableItems">
+            <input type="hidden" class="box" name="ProductDateUpload" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")" />
+
             <button type="submit" class="btn">Update Product</button>
             <span id="close-product-form">&times;</span>
         </form>
@@ -104,7 +116,7 @@
             document.querySelector(".logout-icon").addEventListener("click", function () {
                 // Perform logout action or redirect to another page
                 // For example, redirecting to a logout endpoint
-                window.location.href = "/Admin/AccountsForm"; // Replace with your logout URL
+                window.location.href = "/Admin/ProductForm"; // Replace with your logout URL
             });
         });
     </script>
