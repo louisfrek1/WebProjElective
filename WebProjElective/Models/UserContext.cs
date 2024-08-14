@@ -20,11 +20,21 @@ namespace WebProjElective.Models
             {
                 _mySqlConnection.Open();
                 MySqlCommand command = new MySqlCommand(
-                    @"INSERT INTO users (username, password, email, accttype)
-                      VALUES(@uname, @pass, @mail, @accttype)", _mySqlConnection);
+                    @"INSERT INTO users (username, password, email, fname, lname,
+                              staddress, city, province, pnumber, gender, bdate, accttype)
+                      VALUES(@uname, @pass, @mail, @fname, @lname, @staddress, @city, @province,
+                             @pnumber, @gender, @bdate, @accttype)", _mySqlConnection);
                 command.Parameters.AddWithValue("@uname", user.UserName);
                 command.Parameters.AddWithValue("@pass", user.Password);
                 command.Parameters.AddWithValue("@mail", user.Email);
+                command.Parameters.AddWithValue("@fname", user.FName);
+                command.Parameters.AddWithValue("@lname", user.LName);
+                command.Parameters.AddWithValue("@staddress", user.StAddress);
+                command.Parameters.AddWithValue("@city", user.City);
+                command.Parameters.AddWithValue("@province", user.Province);
+                command.Parameters.AddWithValue("@pnumber", user.PNumber);
+                command.Parameters.AddWithValue("@gender", user.Gender);
+                command.Parameters.AddWithValue("@bdate", user.BDate);
                 command.Parameters.AddWithValue("@accttype", user.AcctType);
                 int rowsAffected = command.ExecuteNonQuery();
                 _mySqlConnection.Close();
@@ -108,8 +118,7 @@ namespace WebProjElective.Models
             _mySqlConnection.Close();
             return users;
         }
-
-        public Users GetUsersById(int id)
+        public Users GetUsersByIds(int id)
         {
             Users users = null;
             _mySqlConnection.Open();
@@ -131,6 +140,55 @@ namespace WebProjElective.Models
             _mySqlConnection.Close();
             return users;
         }
+
+        public Users GetUsersById(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("Invalid user ID", nameof(id));
+            }
+
+            Users user = null;
+            try
+            {
+                _mySqlConnection.Open();
+                var command = new MySqlCommand(
+                    "SELECT username, email, accttype, fname, lname, staddress, city, province, pnumber FROM users WHERE idusers = @id",
+                    _mySqlConnection);
+                command.Parameters.AddWithValue("@id", id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        user = new Users
+                        {
+                            Id = reader.GetInt32("idusers"),
+                            UserName = reader.GetString("username"),
+                            Email = reader.GetString("email"),
+                            AcctType = reader.GetString("accttype"),
+                            StAddress = reader.GetString("staddress"),
+                            City = reader.GetString("city"),
+                            Province = reader.GetString("province"),
+                            PNumber = reader.GetInt32("pnumber"),
+                            FName = reader.GetString("fname"),
+                            LName = reader.GetString("lname")
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving user: {ex.Message}");
+            }
+            finally
+            {
+                _mySqlConnection.Close();
+            }
+
+            return user;
+        }
+
 
         public bool UpdateUser(Users users)
         {
@@ -172,6 +230,59 @@ namespace WebProjElective.Models
                 return false;
             }
         }
+
+        public Users GetUserByUsername(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentException("Invalid username", nameof(username));
+            }
+
+            Users user = null;
+            try
+            {
+                _mySqlConnection.Open();
+                var command = new MySqlCommand(
+                    "SELECT idusers, username, email, accttype, fname, lname, staddress, city, province, pnumber FROM users WHERE username = @username",
+                    _mySqlConnection);
+                command.Parameters.AddWithValue("@username", username);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        user = new Users
+                        {
+                            Id = reader.GetInt32("idusers"),
+                            UserName = reader.GetString("username"),
+                            Email = reader.GetString("email"),
+                            AcctType = reader.GetString("accttype"),
+                            StAddress = reader.GetString("staddress"),
+                            City = reader.GetString("city"),
+                            Province = reader.GetString("province"),
+                            PNumber = reader.GetInt32("pnumber"),
+                            FName = reader.GetString("fname"),
+                            LName = reader.GetString("lname")
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving user: {ex.Message}");
+            }
+            finally
+            {
+                _mySqlConnection.Close();
+            }
+
+            return user;
+        }
+
+
+
+
+
     }
 
 

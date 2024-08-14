@@ -49,13 +49,31 @@
         <!-- Registration Form -->
         <form action="/Home/Index" method="post" class="registration-form" id="registration-form">
             <h3>REGISTER</h3>
+
             <input type="text" placeholder="username" class="box" name="UserName" required>
             <input type="email" placeholder="email" class="box" name="Email" required>
             <input type="password" placeholder="password" class="box" name="Password" required>
-            <input type="hidden" placeholder="account type" class="box" name="AcctType" value="user"></input>
+
+            <h1>Full Name</h1>
+            <input type="name" placeholder="First Name" class="box" name="FName" required>
+            <input type="name" placeholder="Last Name" class="box" name="LName" required>
+
+            <h1>Address</h1>
+            <input type="text" placeholder="Street Address" class="box" name="StAddress" required>
+            <input type="text" placeholder="City" class="box" name="City" required>
+            <input type="text" placeholder="Province" class="box" name="Province" required>
+
+            <h1>Contact Information</h1>
+            <input type="number" placeholder="Phone Number" class="box" name="PNumber" required>
+
+            <input type="gender" placeholder="Gender" class="box" name="Gender" required>
+            <input type="date" placeholder="Birthdate" class="box" name="BDate" required>
+            <input type="hidden" placeholder="account type" class="box" name="AcctType" value="user">
+
             <button type="submit" class="btn">Register Now</button>
             <span id="close-registration">&times;</span>
         </form>
+
     </header>
 
     @if (TempData["SuccessMessage"] != null)

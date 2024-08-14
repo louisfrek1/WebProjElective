@@ -1,4 +1,4 @@
-﻿@model List<Cart>
+﻿@model List<PlacedOrder>
 
 @{
     ViewBag.Title = "Orders";
@@ -15,36 +15,27 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Order ID</th>
-                <th>Product ID</th>
-                <th>Product Name</th>
-                <th>Product Price</th>
-                <th>Product Image</th>
-                <th>Product Category</th>
-                <th>Date Added to Cart</th>
-                <th>Customer Name</th>
+                <th>Order No.</th>
+                <th>Total Price</th>
+                <th>Customer Username</th>
+                <th>Date Order Placed</th>
+                <th>Shipping Name</th>
+                <th>Payment Method</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var cart in Model)
+            @foreach (var po in Model)
             {
                 <tr>
-                    <td>@cart.OrderId</td>
-                    <td>@cart.ProdId</td>
-                    <td>@cart.ProdName</td>
-                    <td>@cart.ProdPrice</td>
+                    <td>@po.PlacedId</td>
+                    <td>@po.TotalPrice</td>
+                    <td>@po.UN</td>
+                    <td>@po.DatePlaced</td>
+                    <td>@po.Shipping</td>
+                    <td>@po.PayMethod</td>
                     <td>
-                        @if (cart.ProdImage != null)
-                        {
-                            <img src="data:image;base64,@(Convert.ToBase64String(cart.ProdImage))" class="product-image" />
-                        }
-                    </td>
-                    <td>@cart.ProdCategory</td>
-                    <td>@cart.ProdDateTime.ToShortDateString()</td>
-                    <td>@cart.Username</td>
-                    <td>
-                        <form method="post" action="@Url.Action("DeleteOrder", "Admin", new { id = cart.OrderId})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
+                        <form method="post" action="@Url.Action("DeleteOrder", "Admin", new { id = po.PlacedId})" onsubmit="return confirm('Sure ka na e delete na nimo ni?');">
                             <button type="submit" class="btn btn-danger">DELETE</button>
                         </form>
                     </td>

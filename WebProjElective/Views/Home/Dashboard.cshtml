@@ -56,7 +56,9 @@
                 }
 
                 <div class="total">total : Php @Model.Sum(cart => cart.ProdPrice)</div>
-                <a href="#" class="btn">Checkout</a>
+                <form action="/Home/CheckoutForm">
+                    <button type="submit" class="btn">Checkout</button>
+                </form>
             }
             else
             {
@@ -107,21 +109,21 @@
                 <img src="~/images/original-logo.png" alt="">
                 <h3>100% Guaranteed supplier</h3>
                 <p>Quality products from trusted suppliers.</p>
-                <a href="#" class="btn">read more</a>
+              @*   <a href="#" class="btn">read more</a> *@
             </div>
 
             <div class="box">
                 <img src="~/images/fastdelivery-logo.png" alt="">
                 <h3>Fast Delivery</h3>
                 <p>Get your products delivered quickly and safely.</p>
-                <a href="#" class="btn">read more</a>
+                @* <a href="#" class="btn">read more</a> *@
             </div>
 
             <div class="box">
                 <img src="~/images/payment-logo.png" alt="">
                 <h3>Easy payment</h3>
                 <p>Convenient payment options for your ease.</p>
-                <a href="#" class="btn">read more</a>
+                @* <a href="#" class="btn">read more</a> *@
             </div>
 
         </div>

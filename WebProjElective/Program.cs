@@ -21,6 +21,13 @@ builder.Services.AddTransient<UserContext>(provider =>
     return new UserContext(connectionString);
 });
 
+builder.Services.AddTransient<PlacedContext>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    return new PlacedContext(connectionString);
+});
+
 builder.Services.AddDbContext<ProductnCart>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),

@@ -8,12 +8,14 @@ namespace WebProjElective.Controllers
         private readonly ProductContext _productContext;
         private readonly UserContext _userContext;
         private readonly CartContext _cartContext;
+        private readonly PlacedContext _placedContext;
 
-        public AdminController(ProductContext productContext, UserContext userContext, CartContext cartContext)
+        public AdminController(ProductContext productContext, UserContext userContext, CartContext cartContext, PlacedContext placedContext)
         {
             _productContext = productContext;
             _userContext = userContext;
             _cartContext = cartContext;
+            _placedContext = placedContext;
         }
         public IActionResult AdminForm()
         {
@@ -36,17 +38,46 @@ namespace WebProjElective.Controllers
             var users = _userContext.GetUsers();
             return View(users);
         }
-
+        
         public IActionResult OrdersForm()
         {
             var carts = _cartContext.GetOrders();
             return View(carts);
         }
 
+        public IActionResult PlacedForm()
+        {
+            var carts = _placedContext.GetOrders();
+            return View(carts);
+        }
+
+        public IActionResult DeliveredForm()
+        {
+            return View();
+        }
+
+        public IActionResult RecievedForm()
+        {
+            return View();
+        }
+        
+
+        public IActionResult ProductOrderedForm()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult UpdateAccForm(int id)
         {
-            var userids = _userContext.GetUsersById(id);
+            var userids = _userContext.GetUsersByIds(id);
+
+            if (userids == null)
+            {
+                TempData["ErrorMessage"] = "User not found.";
+                return RedirectToAction("AccountsForm"); // Redirect back to the list if the user doesn't exist
+            }
+
             return View(userids);
         }
 

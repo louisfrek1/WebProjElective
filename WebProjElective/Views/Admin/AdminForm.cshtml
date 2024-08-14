@@ -41,8 +41,11 @@
             </header>
             <nav>
                 <button class="nav-button" onclick="redirectTo('@Url.Action("AccountsForm", "Admin")')">Accounts</button>
-                <button class="nav-button" onclick="redirectTo('@Url.Action("OrdersForm", "Admin")')">Orders</button>
+                <button class="nav-button" onclick="redirectTo('@Url.Action("OrdersForm", "Admin")')">Added to Cart</button>
+                <button class="nav-button" onclick="redirectTo('@Url.Action("PlacedForm", "Admin")')">Placed Order</button>
+                <button class="nav-button" onclick="redirectTo('@Url.Action("ProductOrderedForm", "Admin")')">Ordered Products</button>
                 <button class="nav-button" onclick="redirectTo('@Url.Action("ProductForm", "Admin")')">Products</button>
+
             </nav>
         </div>
         <script>

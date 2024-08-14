@@ -376,6 +376,7 @@ footer {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 40rem;
+    max-height: 80vh; /* Set a maximum height for the form */
     padding: 2rem;
     background: #fff;
     box-shadow: var(--box-shadow);
@@ -383,7 +384,15 @@ footer {
     text-align: center;
     display: none; /* Initially hidden */
     z-index: 1000; /* Ensure it's above the blurred background */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
 }
+
+    .registration-form h1 {
+        text-align: left; /* Align text to the left */
+        font-size: 1.8rem; /* Adjust the size as needed */
+        margin: 1.5rem 0 .5rem 0; /* Add some space around the headings */
+        color: var(--black); /* Ensure it matches the overall style */
+    }
 
     .registration-form.active {
         display: block;
@@ -429,6 +438,7 @@ footer {
         .registration-form #close-registration:hover {
             color: var(--orange);
         }
+
 
 .user-info {
     display: flex;

@@ -16,14 +16,16 @@ namespace WebProjElective.Controllers
         private readonly ProductContext _productContext;
         private readonly ProductnCart _prodandcart;
         private readonly CartContext _cartContext;
+        private readonly PlacedContext _placedContext;
         private readonly IConfiguration _configuration;
 
         // Inject UserContext dependency
-        public HomeController(UserContext userContext, ProductContext productContext, IConfiguration configuration)
+        public HomeController(UserContext userContext, ProductContext productContext, IConfiguration configuration, PlacedContext placedContext)
         {
             _userContext = userContext;
             _productContext = productContext;
             _configuration = configuration;
+            _placedContext = placedContext;
 
             // Initialize CartContext with connection string
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -37,10 +39,114 @@ namespace WebProjElective.Controllers
             return View(products);
         }
 
+        [HttpGet]
         public IActionResult ProfileForm()
         {
-            return View();
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (!userId.HasValue)
+            {
+                TempData["ErrorMessage"] = "User is not logged in.";
+                return RedirectToAction("Index");
+            }
+
+            var user = _userContext.GetUsersById(userId.Value);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "User information is not available.";
+                return RedirectToAction("Index");
+            }
+
+            var cartItems = _cartContext.GetCartItemsByUsername(user.UserName);
+
+            var viewModel = new UserCart
+            {
+                User = user,
+                Carts = cartItems
+            };
+
+            return View(viewModel);
         }
+
+
+
+        [HttpPost]
+        public IActionResult ProfileForm(int id)
+        {
+            if (id == 0) // Check if the id is not provided or invalid
+            {
+                TempData["ErrorMessage"] = "User information is not available.";
+                return RedirectToAction("Index"); // Redirect to a safe page or return an error view
+            }
+
+            var user = _userContext.GetUsersById(id); // Fetch user data
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "User information is not available.";
+                return RedirectToAction("Index"); // Redirect or return an error view
+            }
+
+            var cartItems = _cartContext.GetCartItemsByUsername(user.UserName); // Fetch cart items
+
+            var viewModel = new UserCart
+            {
+                User = user,
+                Carts = cartItems
+            };
+
+            return View(viewModel);
+        }
+
+        public IActionResult CheckoutForm()
+        {
+            var username = User.Identity.Name;
+            var user = _userContext.GetUserByUsername(username); // Assuming you have a method to get the user by username
+            var cartItems = _cartContext.GetCartItemsByUsername(username);
+
+            var model = new UserCart
+            {
+                User = user,
+                Carts = cartItems
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CheckoutForm(PlacedOrder po)
+        {
+            if (ModelState.IsValid)
+            {
+                // Insert the placed order into the database
+                bool isSuccess = _placedContext.InsertPlacedOrder(po);
+                if (isSuccess)
+                {
+                    // Transfer products from cart to another table
+                    var cartItems = _cartContext.GetCartItemsByUsername(po.UN);
+                    _cartContext.TransferCartItemsToOrderedProducts(cartItems, po.UN);
+
+                    // Delete the cart items for the logged-in user
+                    _cartContext.DeleteCartItemsByUsername(po.UN);
+
+                    TempData["SuccessMessage"] = "Order placed successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to place the order.";
+                }
+            }
+            else
+            {
+                // Capture the validation errors
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                TempData["ErrorMessage"] = "Validation failed: " + string.Join(", ", errors);
+            }
+
+            return RedirectToAction("Dashboard");
+        }
+
+
+
 
         public IActionResult Dashboard()
         {
@@ -179,6 +285,24 @@ namespace WebProjElective.Controllers
             }
 
             return RedirectToAction("StoreProductForm", "Home");
+        }
+
+        public IActionResult UserCart(int userId)
+        {
+            var user = _userContext.GetUsersById(userId); // Fetch user data by userId
+            var cartItems = _cartContext.GetCartsByUserId(userId); // Fetch cart data by userId
+
+            if (user != null && cartItems != null)
+            {
+                var viewModel = new UserCart
+                {
+                    User = user,
+                    Carts = cartItems
+                };
+                return View(viewModel);
+            }
+
+            return View("Error"); // Handle error case
         }
 
 
