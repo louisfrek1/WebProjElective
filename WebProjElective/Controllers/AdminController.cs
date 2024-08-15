@@ -64,8 +64,10 @@ namespace WebProjElective.Controllers
 
         public IActionResult ProductOrderedForm()
         {
-            return View();
+            var carts = _cartContext.GetOrderfromorderedcart();
+            return View(carts);
         }
+
 
         [HttpGet]
         public IActionResult UpdateAccForm(int id)

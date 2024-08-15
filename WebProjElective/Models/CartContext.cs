@@ -133,6 +133,32 @@ namespace WebProjElective.Models
             return carts;
         }
 
+        public List<Cart> GetOrderfromorderedcart()
+        {
+            List<Cart> carts = new List<Cart>();
+            _mySqlConnection.Open();
+            MySqlCommand command = new MySqlCommand("SELECT * FROM orderedproducts", _mySqlConnection);
+            using (MySqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    carts.Add(new Cart
+                    {
+                        OrderId = reader.GetInt32("idorderedproducts"),
+                        ProdId = reader.GetInt32("idproducts"),
+                        ProdName = reader.GetString("name"),
+                        ProdPrice = reader.GetInt32("price"),
+                        ProdImage = (byte[])reader["prodimg"],
+                        ProdCategory = reader.GetString("category"),
+                        Username = reader.GetString("username"),
+                        ProdDateTime = reader.GetDateTime("dateordered")
+                    });
+                }
+            }
+            _mySqlConnection.Close();
+            return carts;
+        }
+
         public bool DeleteOrder(int id)
         {
             try
@@ -240,6 +266,28 @@ namespace WebProjElective.Models
                 // Handle exceptions
             }
         }
+
+        public bool DeleteOrderCart(int prodId)
+        {
+            try
+            {
+                _mySqlConnection.Open();
+                MySqlCommand sqlCommand = new MySqlCommand("DELETE FROM oncarts WHERE idproducts = @prodId", _mySqlConnection);
+                sqlCommand.Parameters.AddWithValue("@prodId", prodId);
+                int rowAffected = sqlCommand.ExecuteNonQuery();
+                return rowAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting item: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                _mySqlConnection.Close();
+            }
+        }
+
 
     }
 }

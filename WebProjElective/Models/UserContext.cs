@@ -243,7 +243,7 @@ namespace WebProjElective.Models
             {
                 _mySqlConnection.Open();
                 var command = new MySqlCommand(
-                    "SELECT idusers, username, email, accttype, fname, lname, staddress, city, province, pnumber FROM users WHERE username = @username",
+                    "SELECT idusers, username, email, accttype, fname, lname, staddress, city, province, pnumber, bdate FROM users WHERE username = @username",
                     _mySqlConnection);
                 command.Parameters.AddWithValue("@username", username);
 
@@ -262,7 +262,8 @@ namespace WebProjElective.Models
                             Province = reader.GetString("province"),
                             PNumber = reader.GetInt32("pnumber"),
                             FName = reader.GetString("fname"),
-                            LName = reader.GetString("lname")
+                            LName = reader.GetString("lname"),
+                            BDate = reader.GetDateTime("bdate")
                         };
                     }
                 }

@@ -100,8 +100,8 @@
         </a>
         <nav class="navbar">
             <a href="/Home/Dashboard">Home</a>
-            <a href="#features">Features</a>
-            <a href="#categories">Categories</a>
+            <a href="/Home/Dashboard#features">Features</a>
+            <a href="/Home/Dashboard#categories">Categories</a>
         </nav>
 
         <div class="icons">
@@ -114,15 +114,14 @@
                 </button>
                 <div class="user-info-dropdown" id="user-info">
                     <a href="#"><i class="fas fa-user"></i>Profile</a>
-                    <a href="#"><i class="fas fa-box"></i>Orders</a>
-                    <a href="#"><i class="fas fa-info-circle"></i>Account Info</a>
+                    <a href="/Home/MyOrderForm"><i class="fas fa-box"></i>Orders</a>
                     <a href="/Home/Logout"><i class="fas fa-sign-out-alt"></i>Log Out</a>
                 </div>
             </div>
         </div>
 
         <div class="shopping-cart">
-            @if (Model.CartItems != null && Model.CartItems.Any())
+            @if (Model != null && Model.CartItems.Any())
             {
                 @foreach (var cart in Model.CartItems)
                 {
@@ -138,7 +137,9 @@
                 }
 
                 <div class="total">total : Php @Model.CartItems.Sum(cart => cart.ProdPrice)</div>
-                <a href="#" class="btn">Checkout</a>
+                <form action="/Home/CheckoutForm">
+                    <button type="submit" class="btn">Checkout</button>
+                </form>
             }
             else
             {

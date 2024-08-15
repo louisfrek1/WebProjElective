@@ -1,5 +1,5 @@
 ﻿@using System.Security.Claims
-@model UserCart
+@model List<Cart>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +10,47 @@
     <link rel="stylesheet" href="site.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .maintenance-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+            .maintenance-overlay span {
+                background: rgba(0, 0, 0, 0.7);
+                padding: 20px;
+                border-radius: 5px;
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            .maintenance-overlay button {
+                background-color: #f1c40f;
+                border: none;
+                color: black;
+                padding: 10px 20px;
+                font-size: 1rem;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+
+                .maintenance-overlay button:hover {
+                    background-color: #f39c12;
+                }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -17,9 +58,9 @@
             <img src="~/images/grocerylogo.png" alt=""> Hehehe
         </a>
         <nav class="navbar">
-            <a href="/Home/Dashboard">Home</a>
-            <a href="/Home/Dashboard#features">Features</a>
-            <a href="/Home/Dashboard#categories">Categories</a>
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#categories">Categories</a>
         </nav>
 
         <div class="icons">
@@ -32,17 +73,17 @@
                     @* <img src="~/images/user-pflaceholder.png"> *@
                 </button>
                 <div class="user-info-dropdown" id="user-info">
-                    <a href="#"><i class="fas fa-user"></i>Profile</a>
-                    <a href="/Home/MyOrderForm"><i class="fas fa-box"></i>Orders</a>
+                    <a href="/Home/ProfileForm"><i class="fas fa-user"></i>Profile</a>
+                    <a href="#"><i class="fas fa-box"></i>Orders</a>
                     <a href="/Home/Logout"><i class="fas fa-sign-out-alt"></i>Log Out</a>
                 </div>
             </div>
         </div>
 
         <div class="shopping-cart">
-            @if (Model != null && Model.Carts.Any())
+            @if (Model != null && Model.Any())
             {
-                @foreach (var cart in Model.Carts)
+                @foreach (var cart in Model)
                 {
                     <div class="box">
                         <i class="fas fa-trash" data-id="@cart.ProdId" onclick="deleteItem(this)"></i>
@@ -55,7 +96,7 @@
                     </div>
                 }
 
-                <div class="total">total : Php @Model.Carts.Sum(cart => cart.ProdPrice)</div>
+                <div class="total">total : Php @Model.Sum(cart => cart.ProdPrice)</div>
                 <form action="/Home/CheckoutForm">
                     <button type="submit" class="btn">Checkout</button>
                 </form>
@@ -90,114 +131,71 @@
         </div>
     }
     <!-- Home Section ni dria-->
+    
+
+    <!--Product section ni dria-->
+    <!--Categories section ni dria-->
+
+    
 
 
     <main>
+        <input type="hidden" id="userId" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+        <div class="maintenance-overlay">
+            <span>Site Under Maintenance</span>
+            <button onclick="goBack()">OK</button>
+        </div>
         <!-- Success and error messages -->
-        <section id="profile" class="profile-section">
-            <h2>User Profile</h2>
-            <div class="profile-details">
-                <div class="form-group">
-                    <label>Username:</label>
-                    <p style="text-transform: none;">@Model.User.UserName</p>
-                </div>
-
-                <div class="form-group">
-                    <label>Name:</label>
-                    <p style="text-transform: none;">@Model.User.FName @Model.User.LName</p>
-                </div>
-
-                <div class="form-group">
-                    <label>Email:</label>
-                    <p style="text-transform: none;">@Model.User.Email</p>
-                </div>
-
-                <div class="form-group">
-                    <label>Phone Number:</label>
-                    <p>@Model.User.PNumber</p>
-                </div>
-
-                <div class="form-group">
-                    <label>Address:</label>
-                    <p>@Model.User.StAddress, @Model.User.City, @Model.User.Province</p>
-                </div>
-
-                <div class="form-group">
-                    <label>Birthdate:</label>
-                    <p>@Model.User.BDate.ToString("yyyy/MM/dd")</p>
-                </div>
-
-
-
-            </div>
-        </section>
-
-
         <!-- Your main content goes here -->
     </main>
-
-    <style>
-        /* General profile display styling */
-.profile-section {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
-
-.profile-section h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
-}
-
-.profile-details .form-group {
-    margin-bottom: 15px;
-}
-
-.profile-details label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
-
-.profile-details p {
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    color: #333;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.profile-details .btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 20px;
-}
-
-.profile-details .btn:hover {
-    background-color: #0056b3;
-}
-    </style>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="site.js"></script>
-
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper(".product-slider", {
+                loop: true,
+                spaceBetween: 20,
+                autoplay: {
+                    delay: 7500,
+                    disableOnInteraction: false,
+                },
+                centeredSlides: true,
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1020: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+            var categorySwiper = new Swiper(".category-slider", {
+                loop: true,
+                spaceBetween: 20,
+                autoplay: {
+                    delay: 7500,
+                    disableOnInteraction: false,
+                },
+                centeredSlides: true,
+                breakpoints: {
+                    0: {
+                        slidesPerView: 1,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                    },
+                    1020: {
+                        slidesPerView: 3,
+                    },
+                },
+            });
+
+        });
+
         function deleteItem(element) {
             var prodId = element.getAttribute("data-id");
 
@@ -217,6 +215,10 @@
                     })
                     .catch(error => console.error('Error:', error));
             }
+        }
+
+        function goBack() {
+            window.history.back();
         }
 
     </script>

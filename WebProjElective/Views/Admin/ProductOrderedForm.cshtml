@@ -1,5 +1,88 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<Cart>
+
 @{
+    ViewBag.Title = "Orders";
 }
+@* <link rel="stylesheet" href="~/css/admindes.css"> *@
+<header>
+    <h2>ADMIN PANEL ||| Orders</h2>
+    <div class="logout-icon">
+        <img src="~/images/back-icon.png" alt="Logout">
+    </div>
+</header>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Product Price</th>
+                <th>Product Image</th>
+                <th>Product Category</th>
+                <th>Date Added to Cart</th>
+                <th>Customer Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cart in Model)
+            {
+                <tr>
+                    <td>@cart.OrderId</td>
+                    <td>@cart.ProdId</td>
+                    <td>@cart.ProdName</td>
+                    <td>@cart.ProdPrice</td>
+                    <td>
+                        @if (cart.ProdImage != null)
+                        {
+                            <img src="data:image;base64,@(Convert.ToBase64String(cart.ProdImage))" class="product-image" />
+                        }
+                    </td>
+                    <td>@cart.ProdCategory</td>
+                    <td>@cart.ProdDateTime.ToShortDateString()</td>
+                    <td>@cart.Username</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    .container .table .product-image {
+        max-width: 80px; /* Adjust the maximum width as needed */
+        max-height: 50px; /* Adjust the maximum height as needed */
+        width: auto; /* Maintain aspect ratio */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+        header .logout-icon {
+            position: absolute;
+            top: 0;
+            right: 10px; /* Adjust as needed */
+        }
+
+            header .logout-icon img {
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+            }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".logout-icon").addEventListener("click", function () {
+            // Perform logout action or redirect to another page
+            // For example, redirecting to a logout endpoint
+            window.location.href = "/Admin/AdminForm"; // Replace with your logout URL
+        });
+    });
+</script>
+

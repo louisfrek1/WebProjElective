@@ -31,6 +31,20 @@ namespace WebProjElective.Controllers
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             _cartContext = new CartContext(connectionString);
         }
+        [HttpPost]
+        public IActionResult UpdateProfile(int id)
+        {
+            var user = _userContext.GetUsersById(id); // Fetch user data
+            var cartItems = _cartContext.GetCartItemsByUsername(user.UserName); // Fetch cart items
+
+            var viewModel = new UserCart
+            {
+                User = user,
+                Carts = cartItems
+            };
+
+            return View(viewModel);
+        }
 
         // GET: Home/Index
         public IActionResult Index()
@@ -42,50 +56,23 @@ namespace WebProjElective.Controllers
         [HttpGet]
         public IActionResult ProfileForm()
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
+            var username = User.Identity.Name;
+            var user = _userContext.GetUserByUsername(username); // Assuming you have a method to get the user by username
+            var cartItems = _cartContext.GetCartItemsByUsername(username);
 
-            if (!userId.HasValue)
-            {
-                TempData["ErrorMessage"] = "User is not logged in.";
-                return RedirectToAction("Index");
-            }
-
-            var user = _userContext.GetUsersById(userId.Value);
-            if (user == null)
-            {
-                TempData["ErrorMessage"] = "User information is not available.";
-                return RedirectToAction("Index");
-            }
-
-            var cartItems = _cartContext.GetCartItemsByUsername(user.UserName);
-
-            var viewModel = new UserCart
+            var model = new UserCart
             {
                 User = user,
                 Carts = cartItems
             };
 
-            return View(viewModel);
+            return View(model);
         }
-
-
 
         [HttpPost]
         public IActionResult ProfileForm(int id)
         {
-            if (id == 0) // Check if the id is not provided or invalid
-            {
-                TempData["ErrorMessage"] = "User information is not available.";
-                return RedirectToAction("Index"); // Redirect to a safe page or return an error view
-            }
-
             var user = _userContext.GetUsersById(id); // Fetch user data
-            if (user == null)
-            {
-                TempData["ErrorMessage"] = "User information is not available.";
-                return RedirectToAction("Index"); // Redirect or return an error view
-            }
-
             var cartItems = _cartContext.GetCartItemsByUsername(user.UserName); // Fetch cart items
 
             var viewModel = new UserCart
@@ -305,6 +292,21 @@ namespace WebProjElective.Controllers
             return View("Error"); // Handle error case
         }
 
+        [HttpDelete]
+        public IActionResult DeleteCartItem(int prodId)
+        {
+            var result = _cartContext.DeleteOrderCart(prodId);
+            if (result)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        public IActionResult MyOrderForm()
+        {
+            return View();
+        }
 
     }
 }
